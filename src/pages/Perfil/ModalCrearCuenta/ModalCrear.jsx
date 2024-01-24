@@ -18,8 +18,8 @@ export default function ModalCrearCuenta(info) {
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
             if (info.modificarExistente) return actualizarEnlace(info.usuario, info.cuenta, info.tipo, valor, resolve, reject, info.cambioDatos, [tag, valorPrimaria, valorSecundaria])
-
-            crearCuenta(valor, tag, valorPrimaria, valorSecundaria, info.cuenta, resolve, reject, info.cambioDatos)
+            
+            crearCuenta(valor, tag, valorPrimaria, valorSecundaria, info.usuario, resolve, reject, info.cambioDatos)
         }), {
             loading: (info.modificarExistente ? "Actualizando" : "Añadiendo") + " cuenta",
             success: "Cuenta " + (info.modificarExistente ? "actualizada" : "anadida"),
