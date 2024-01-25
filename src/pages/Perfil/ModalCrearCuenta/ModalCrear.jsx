@@ -101,7 +101,7 @@ export default function ModalCrearCuenta(info) {
         <>
             {info.modificarExistente ?
                 (
-                    <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-hammer"></i>} />
+                    <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-pencil"></i>} />
                 )
                 :
                 (
