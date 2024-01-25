@@ -77,16 +77,19 @@ async function eliminarCuenta(data, resolve, reject, cambioDatos) {
 }
 
 async function getCuentaPorPUUID(puuid) {
-    axios
-        .get(api.directorio + "cuentas/puuid=" + puuid, {
-            headers: { "x-auth-token": window.localStorage.getItem("token") },
-        })
-        .then((response) => {
-            return response.data.existe ? response.data.result : false
-        })
-        .catch((e) => {
-            return e;
-        });
+    return new Promise((resolve, reject) => {
+        axios
+            .get(api.directorio + "cuentas/puuid=" + puuid, {
+                headers: { "x-auth-token": window.localStorage.getItem("token") },
+            })
+            .then((response) => {
+                resolve(response.data.existe ? response.data.result : false);
+            })
+            .catch((e) => {
+                reject(e);
+                return e;
+            });
+    });
 }
 
 export { crearCuenta, eliminarCuenta, getCuentaPorPUUID };
