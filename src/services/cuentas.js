@@ -42,13 +42,13 @@ async function crearCuenta(valor, tag = "EUW", valorPrimaria, valorSecundaria, u
                             reject();
                         }
                     })
-                    .catch((e) => {
-                        return e;
+                    .catch(() => {
+                        reject();
                     });
             }
         })
-        .catch((e) => {
-            return e;
+        .catch(() => {
+            reject();
         });
 }
 
@@ -71,8 +71,8 @@ async function eliminarCuenta(data, resolve, reject, cambioDatos) {
                 reject();
             }
         })
-        .catch((e) => {
-            return e;
+        .catch(() => {
+            reject();
         });
 }
 
@@ -85,9 +85,8 @@ async function getCuentaPorPUUID(puuid) {
             .then((response) => {
                 resolve(response.data.existe ? response.data.result : false);
             })
-            .catch((e) => {
-                reject(e);
-                return e;
+            .catch(() => {
+                reject();
             });
     });
 }
