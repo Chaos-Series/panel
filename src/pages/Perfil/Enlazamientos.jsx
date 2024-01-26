@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
 
 import ModalEnlazar from "./ModalEnlazar/ModalEnlazar";
-import ModalEnlazarIndividual from "./ModalEnlazar/ModalEnlazarIndividual";
+import ModalEnlazarRedSocial from "./ModalEnlazar/ModalEnlazarRedSocial";
 import ModalEliminar from "./ModalEnlazar/ModalEliminar";
 
 export default function Enlazar(cuentas) {
@@ -62,7 +62,7 @@ export default function Enlazar(cuentas) {
                     <div className="flex gap-2">
                         {cuentas.usuario.info["circuitotormenta"] != null ?
                             <>
-                                <ModalEnlazarIndividual usuario={cuentas.usuario} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEnlazarRedSocial usuario={cuentas.usuario} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
                                 <ModalEliminar usuario={cuentas.usuario} tipo={"circuitotormenta"} cambioDatos={cuentas.cambioDatos} />
                             </> :
                             <></>
@@ -77,7 +77,7 @@ export default function Enlazar(cuentas) {
                     <div className="flex gap-2">
                         {cuentas.usuario.info["twitter"] != null ?
                             <>
-                                <ModalEnlazarIndividual usuario={cuentas.usuario} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEnlazarRedSocial usuario={cuentas.usuario} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
                                 <ModalEliminar usuario={cuentas.usuario} tipo={"twitter"} cambioDatos={cuentas.cambioDatos} />
                             </> :
                             <></>
@@ -92,7 +92,7 @@ export default function Enlazar(cuentas) {
                     <div className="flex gap-2">
                         {cuentas.usuario.info["discord"] != null ?
                             <>
-                                <ModalEnlazarIndividual usuario={cuentas.usuario} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
+                                <ModalEnlazarRedSocial usuario={cuentas.usuario} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
                                 <ModalEliminar usuario={cuentas.usuario} tipo={"discord"} cambioDatos={cuentas.cambioDatos} />
                             </> :
                             <></>

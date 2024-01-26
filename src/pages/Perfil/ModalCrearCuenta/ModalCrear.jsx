@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 
 import { crearCuenta } from "../../../services/cuentas";
+import { actualizarEnlace } from "../../../services/enlaces";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { toast } from 'sonner'
@@ -16,10 +17,12 @@ export default function ModalCrearCuenta(info) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
+            if (info.modificarExistente) return actualizarEnlace(info.usuario, info.cuenta, info.tipo, valor, resolve, reject, info.cambioDatos, [tag, valorPrimaria, valorSecundaria])
+            
             crearCuenta(valor, tag, valorPrimaria, valorSecundaria, info.usuario, resolve, reject, info.cambioDatos)
         }), {
-            loading: 'Añadiendo cuenta',
-            success: 'Cuenta añadida',
+            loading: (info.modificarExistente ? "Actualizando" : "Añadiendo") + " cuenta",
+            success: "Cuenta " + (info.modificarExistente ? "actualizada" : "anadida"),
             error: 'Error',
         });
     }
@@ -87,7 +90,7 @@ export default function ModalCrearCuenta(info) {
                         <DropdownItem key={"Jungla"} value={2} onPress={(e) => { setValorSecundaria(e.target.value) }}>{"Jungla"}</DropdownItem>
                         <DropdownItem key={"Midlane"} value={3} onPress={(e) => { setValorSecundaria(e.target.value) }}>{"Midlane"}</DropdownItem>
                         <DropdownItem key={"ADC"} value={4} onPress={(e) => { setValorSecundaria(e.target.value) }}>{"ADC"}</DropdownItem>
-                        <DropdownItem key={"Support"} value={5} onPress={(e) => { setValorSecundaria(e.target.value) }}>{"Support "}</DropdownItem>
+                        <DropdownItem key={"Support"} value={5} onPress={(e) => { setValorSecundaria(e.target.value) }}>{"Support"}</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
@@ -96,9 +99,18 @@ export default function ModalCrearCuenta(info) {
 
     return (
         <>
-            <Button onClick={onOpen} color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
-                Nueva Cuenta
-            </Button>
+            {info.modificarExistente ?
+                (
+                    <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-pencil"></i>} />
+                )
+                :
+                (
+                    <Button onClick={onOpen} color="primary" endContent={<i className="fa-solid fa-plus"></i>}>
+                        Nueva Cuenta
+                    </Button>
+                )
+            }
+
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
@@ -107,7 +119,7 @@ export default function ModalCrearCuenta(info) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">{"Añadir cuenta de League of Legends"}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">{(info.modificarExistente ? "Editar" : "Anadir") + " cuenta de League of Legends"}</ModalHeader>
                             <ModalBody>
                                 <div className="flex justify-between items-center">
                                     <Input type="text" placeholder={"Riot ID"} className="w-full sm:max-w-[100%]" isRequired onChange={(e) => { setValor(e.target.value) }} />
@@ -146,7 +158,7 @@ export default function ModalCrearCuenta(info) {
                                         toast.error('No has rellenado todos los campos.')
                                     }
                                 }}>
-                                    Añadir
+                                    {info.modificarExistente ? "Confirmar" : "Añadir"}
                                 </Button>
                             </ModalFooter>
                         </>

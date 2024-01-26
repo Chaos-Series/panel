@@ -56,13 +56,11 @@ export default function ModalDesinscribirse({ inhouse, blueLleno, redLleno, camb
 
   return (
     <div className="float-right">
-      {usuario.info.rol >= 20 ? (
+      {(usuario.info.rol >= 20) &&
         <Button color="danger" onPress={onOpen} endContent={<i className="fa-solid fa-arrow-right-to-bracket"></i>}>
           Desinscribirse
         </Button>
-      ) : (
-        ""
-      )}
+      }
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
           {(onClose) => (

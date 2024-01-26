@@ -1,27 +1,44 @@
 import axios from "axios";
 import api from "../../variables.json";
+import getPosition from "../utils/getPosition";
 
 import sendLog from "../utils/sendLog";
 import { toast } from "sonner";
 
-async function actualizarEnlace(data, columna, valor, resolve, reject, cambioDatos) {
+async function actualizarEnlace(usuario, cuentaLoL, columna, valor, resolve, reject, cambioDatos, nuevaInfoCuenta = false) {
+    const body = {
+        ...(nuevaInfoCuenta ? {
+            id_usuario: usuario.info.id_usuario,
+            id: cuentaLoL.id_cuenta,
+            invocador: valor,
+            tag: nuevaInfoCuenta[0],
+            puuid_lol: cuentaLoL.puuid_lol,
+            linea_principal: getPosition(nuevaInfoCuenta[1]),
+            linea_secundaria: getPosition(nuevaInfoCuenta[2])
+        } : {
+            columna: columna,
+            cuenta: valor,
+            token: window.localStorage.getItem("token"),
+        })
+    };
+
     axios
         .put(
-            api.directorio + "usuarios/enlaces",
-            { id_usuario: data.info.id_usuario, columna: columna, valor: valor },
-            { headers: { "x-auth-token": window.localStorage.getItem("token") } }
+            api.directorio + (nuevaInfoCuenta ? "cuentas" : "usuarios/enlaces"), body, { headers: { "x-auth-token": window.localStorage.getItem("token") } }
         )
-        .then(function (check) {
-            if (check.data.status == 200) {
-                sendLog(data.info.id_usuario, "Añadir Enlaze", {
-                    accion: "Añadido Enlace",
-                    columna: columna,
-                    cuenta: valor,
-                    token: window.localStorage.getItem("token"),
+        .then(function (response) {
+            if (response.data.status == 200) {
+                sendLog(usuario.info.id_usuario, nuevaInfoCuenta ? "Modificar Cuenta" : "Añadir Enlace", {
+                    accion: nuevaInfoCuenta ? "Modificar Cuenta" : "Añadir Enlace",
+                    id_usuario: usuario.info.id_usuario,
+                    body
                 });
                 cambioDatos(true);
                 resolve();
-            } else if (check.data.status == 409) {
+            } else if (response.data.status == 500) {
+                toast.error("Error. Avisa a la administración.");
+                reject();
+            } else if (response.data.status == 409) {
                 toast.error("La cuenta ya ha sido vinculada.");
                 reject();
             }

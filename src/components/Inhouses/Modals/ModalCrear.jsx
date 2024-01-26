@@ -25,9 +25,11 @@ export default function ModalEquipos(cambioDatos) {
 
     return (
         <>
-            {usuario.info.rol >= 20 ? <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
-                Crear Inhouse
-            </Button> : ""}
+            {(usuario.info.rol >= 20) &&
+                <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
+                    Crear Inhouse
+                </Button>
+            }
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}

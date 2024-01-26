@@ -5,7 +5,7 @@ import { Card, CardHeader, CardBody, Image, Divider, Skeleton } from "@nextui-or
 
 import ModalPerfil from "./ModalEditar/ModalEditar.jsx";
 
-import CuentasTabla from "./Cuentas.jsx";
+import CuentasTabla from "./LoL/Cuentas.jsx";
 import Enlazar from "./Enlazamientos.jsx";
 
 import { returnSession } from "../../utils/sessions.js";
