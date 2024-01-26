@@ -1,7 +1,8 @@
 import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
 
-import ModalCrearCuenta from "./ModalCrearCuenta/ModalCrear";
-import ModalEliminarCuenta from "./ModalCrearCuenta/ModalEliminar";
+import ModalCrearCuenta from "../ModalCrearCuenta/ModalCrear";
+import ModalEliminarCuenta from "../ModalCrearCuenta/ModalEliminar";
+import RefrescarCuenta from "./RefrescarCuenta";
 
 export default function Cuentas(usuario) {
 
@@ -50,6 +51,7 @@ export default function Cuentas(usuario) {
                                 <h4 className="font-[300] text-sm">{cuenta.linea_principal}, {cuenta.linea_secundaria}</h4>
                             </div>
                             <div className="flex gap-2">
+                                <RefrescarCuenta usuario={usuario.usuario} cuenta={cuenta} cambioDatos={usuario.cambioDatos} />
                                 <ModalCrearCuenta usuario={usuario.usuario} cuenta={cuenta} cambioDatos={usuario.cambioDatos} tipo={"cuentas_lol"}  modificarExistente />
                                 <ModalEliminarCuenta cuenta={cuenta} cambioDatos={usuario.cambioDatos} />
                             </div>

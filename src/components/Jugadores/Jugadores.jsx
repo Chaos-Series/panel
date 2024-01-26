@@ -5,7 +5,7 @@ import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Chip } fr
 import api from "../../../variables.json";
 
 import ModalJugadores from "./Modals/ModalEditar";
-import Cuentas from "../../pages/Perfil/Cuentas";
+import Cuentas from "../../pages/Perfil/LoL/Cuentas";
 
 import { columns } from "./data";
 import { columnsEquipo } from "../Equipos/data";
