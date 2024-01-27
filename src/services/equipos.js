@@ -2,13 +2,13 @@ import axios from "axios";
 import api from "../../variables.json";
 import { toast } from "sonner";
 
-async function crearEquipo(nombre, formdata, resolve, reject, cambioDatos) {
+async function crearEquipo(nombre, formdata, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         const comprobacion = await axios.get(api.directorio + "equipos/nombre=" + nombre, { headers: { "x-auth-token": localStorage.getItem("token") } });
         if (comprobacion.data.result.length == 0) {
             const respuesta = await axios.post(api.directorio + "equipos", formdata, { headers: { "x-auth-token": localStorage.getItem("token") } });
             if (respuesta.data.status == 200) {
-                cambioDatos(true);
+                setCambioDatos(!cambioDatos);
                 resolve();
             } else {
                 reject();
@@ -22,11 +22,11 @@ async function crearEquipo(nombre, formdata, resolve, reject, cambioDatos) {
     }
 }
 
-async function eliminarEquipo(id, resolve, reject, cambioDatos) {
+async function eliminarEquipo(id, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.delete(api.directorio + "equipos", { data: { id: id }, headers: { "x-auth-token": localStorage.getItem("token") } });
         if (respuesta.data.status == 200) {
-            cambioDatos(true);
+            setCambioDatos(!cambioDatos);
             resolve();
         } else {
             reject();
@@ -36,10 +36,10 @@ async function eliminarEquipo(id, resolve, reject, cambioDatos) {
     }
 }
 
-async function conseguirEquipos(setCambioDatos) {
+async function conseguirEquipos(cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "equipos", { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -47,10 +47,10 @@ async function conseguirEquipos(setCambioDatos) {
     }
 }
 
-async function conseguirEquiposPorId(idEquipo, setCambioDatos) {
+async function conseguirEquiposPorId(idEquipo, cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "equipos/id=" + idEquipo, { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -58,10 +58,10 @@ async function conseguirEquiposPorId(idEquipo, setCambioDatos) {
     }
 }
 
-async function conseguirLigas(setCambioDatos) {
+async function conseguirLigas(cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "ligas", { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -69,10 +69,10 @@ async function conseguirLigas(setCambioDatos) {
     }
 }
 
-async function conseguirTemporadas(setCambioDatos) {
+async function conseguirTemporadas(cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "temporadas", { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -80,10 +80,10 @@ async function conseguirTemporadas(setCambioDatos) {
     }
 }
 
-async function conseguirUsuarios(idEquipo, setCambioDatos) {
+async function conseguirUsuarios(idEquipo, cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "equipos/usuarios/id=" + idEquipo, { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -91,10 +91,10 @@ async function conseguirUsuarios(idEquipo, setCambioDatos) {
     }
 }
 
-async function modificarEquipo(info, valor, resolve, reject, setCambioDatos) {
+async function modificarEquipo(info, valor, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         await axios.put(api.directorio + "equipos", { id: info.equipo[0].id_equipo, columna: info.columna.modificar, valor: valor }, { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(true);
+        setCambioDatos(!cambioDatos);
         resolve();
     } catch (error) {
         reject();

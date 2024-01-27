@@ -4,7 +4,7 @@ import getPosition from "../utils/getPosition";
 import sendLog from "../utils/sendLog";
 import { toast } from "sonner";
 
-async function crearCuenta(valor, tag = "EUW", valorPrimaria, valorSecundaria, usuario, resolve, reject, cambioDatos) {
+async function crearCuenta(valor, tag = "EUW", valorPrimaria, valorSecundaria, usuario, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         const checkCuentaLoL = await axios.get(api.directorio + "cuentas/nombre=" + valor + "&tag=" + tag, { headers: { "x-auth-token": window.localStorage.getItem("token") } });
         if (checkCuentaLoL.data.existe) {
@@ -32,7 +32,7 @@ async function crearCuenta(valor, tag = "EUW", valorPrimaria, valorSecundaria, u
                     linea_principal: principal,
                     linea_secundaria: secundaria,
                 });
-                cambioDatos(true);
+                setCambioDatos(!cambioDatos);
                 resolve();
             } else if (responsePost.data.status == 500) {
                 toast.error("Error. Avisa a la administración.");
@@ -44,7 +44,7 @@ async function crearCuenta(valor, tag = "EUW", valorPrimaria, valorSecundaria, u
     }
 }
 
-async function eliminarCuenta(data, resolve, reject, cambioDatos) {
+async function eliminarCuenta(data, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         const response = await axios.delete(api.directorio + "cuentas", {
             data: { id_cuenta: data.cuenta["id_cuenta"], id_usuario: data.cuenta["id_usuario"] },
@@ -55,7 +55,7 @@ async function eliminarCuenta(data, resolve, reject, cambioDatos) {
                 accion: "Eliminar Cuenta",
                 id_cuenta: data.cuenta["id_cuenta"],
             });
-            cambioDatos(true);
+            setCambioDatos(!cambioDatos);
             resolve();
         } else if (response.data.status == 500) {
             toast.error("Error. Avisa a la administración.");

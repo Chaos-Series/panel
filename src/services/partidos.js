@@ -4,11 +4,11 @@ import { toast } from "sonner";
 import getEpoch from "../utils/getEpoch";
 import sendLog from "../utils/sendLog";
 
-async function crearInhouse(fecha, resolve, reject, cambioDatos) {
+async function crearPartido(fecha, resolve, reject, cambioDatos, setCambioDatos, inhouse = false) {
     try {
-        const respuesta = await axios.post(api.directorio + "partidos/inhouses", { fecha: getEpoch(fecha) }, { headers: { "x-auth-token": localStorage.getItem("token") } });
+        const respuesta = await axios.post(api.directorio + "partidos/inhouses", { fecha: getEpoch(fecha), tipo: inhouse ? 1 : 0 }, { headers: { "x-auth-token": localStorage.getItem("token") } });
         if (respuesta.data.status == 200) {
-            cambioDatos(true);
+            setCambioDatos(!cambioDatos);
             resolve();
         } else {
             reject();
@@ -18,11 +18,11 @@ async function crearInhouse(fecha, resolve, reject, cambioDatos) {
     }
 }
 
-async function eliminarUsuario(id, resolve, reject, cambioDatos) {
+async function eliminarUsuario(id, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.delete(api.directorio + "usuarios", { data: { id: id }, headers: { "x-auth-token": localStorage.getItem("token") } });
         if (respuesta.data.status == 200) {
-            cambioDatos(true);
+            setCambioDatos(!cambioDatos);
             resolve();
         } else {
             reject();
@@ -33,10 +33,10 @@ async function eliminarUsuario(id, resolve, reject, cambioDatos) {
     }
 }
 
-async function conseguirInhouses(setCambioDatos) {
+async function conseguirPartidos(cambioDatos, setCambioDatos, inhouse = false) {
     try {
-        const respuesta = await axios.get(api.directorio + "partidos/inhouses", { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        const respuesta = await axios.get(api.directorio + `partidos/${inhouse ? "inhouses" : "partidos"}`, { headers: { "x-auth-token": localStorage.getItem("token") } });
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -44,22 +44,11 @@ async function conseguirInhouses(setCambioDatos) {
     }
 }
 
-async function conseguirPartidos(setCambioDatos) {
+async function conseguirPartidoPorId(idPartido, cambioDatos, setCambioDatos, inhouse = false) {
     try {
-        const respuesta = await axios.get(api.directorio + "partidos/partidos", { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
-        return respuesta.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-async function conseguirInhousePorId(idInhouse, setCambioDatos, partido = false) {
-    try {
-        const url = partido ? api.directorio + "partidos/inhouses/id=" + idInhouse + "?partido=true" : api.directorio + "partidos/inhouses/id=" + idInhouse;
+        const url = api.directorio + "partidos/inhouses/?id=" + idPartido + `&tipo=${inhouse ? 1 : 0}`;
         const respuesta = await axios.get(url, { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -67,10 +56,10 @@ async function conseguirInhousePorId(idInhouse, setCambioDatos, partido = false)
     }
 }
 
-async function inscribirseInhouse(inhouse, usuario, side, posicion, cambioDatos, resolve, reject) {
+async function inscribirseInhouse(inhouse, usuario, side, posicion, cambioDatos, setCambioDatos, resolve, reject) {
     try {
         const response = await axios.put(api.directorio + "partidos/inhouses", { id_inhouse: inhouse, id_usuario: usuario, side: side, posicion: posicion }, { headers: { "x-auth-token": localStorage.getItem("token") } });
-        cambioDatos(true);
+        setCambioDatos(!cambioDatos);
         sendLog(usuario, "Inscribirse", { id_inhouse: inhouse, id_usuario: usuario, side: side, posicion: posicion });
         if (response.data.result == "El usuario ya existe.") {
             reject();
@@ -82,10 +71,10 @@ async function inscribirseInhouse(inhouse, usuario, side, posicion, cambioDatos,
     }
 }
 
-async function actualizarUsuario(usuario, columna, valor, cambioDatos, resolve, reject) {
+async function actualizarUsuario(usuario, columna, valor, cambioDatos, setCambioDatos, resolve, reject) {
     try {
         await axios.put(api.directorio + "usuarios", { id_usuario: usuario.jugador.id_usuario, columna: columna, valor: valor }, { headers: { "x-auth-token": localStorage.getItem("token") } });
-        cambioDatos(true);
+        setCambioDatos(!cambioDatos);
         sendLog(usuario.jugador.id_usuario, "Actualizar Usuario", { id: usuario.jugador.id_usuario });
         resolve();
     } catch (error) {
@@ -93,4 +82,4 @@ async function actualizarUsuario(usuario, columna, valor, cambioDatos, resolve, 
     }
 }
 
-export { crearInhouse, eliminarUsuario, conseguirInhouses, conseguirInhousePorId, inscribirseInhouse, actualizarUsuario, conseguirPartidos };
+export { crearPartido, eliminarUsuario, conseguirPartidos, conseguirPartidoPorId, inscribirseInhouse, actualizarUsuario };
