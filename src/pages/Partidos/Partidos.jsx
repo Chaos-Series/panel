@@ -11,11 +11,11 @@ import { CircularProgress } from "@nextui-org/react";
 function Partidos() {
     const [partidos, setPartidos] = useState();
     const [cargando, setCargando] = useState(true);
-    const [cambioDatos, setCambioDatos] = useState(false);
+    const [cambioDatos, setCambioDatos] = useState(true);
 
     useEffect(() => {
-        if (!cargando) return;
         returnSessionAdmin(window.localStorage.getItem("token"));
+        if (!cambioDatos) return;
         conseguirPartidos(cambioDatos, setCambioDatos).then((listaPartidos) => {
             setPartidos(listaPartidos.result);
             setCargando(false);
