@@ -4,33 +4,32 @@ import getPosition from "../utils/getPosition";
 import sendLog from "../utils/sendLog";
 import { toast } from "sonner";
 
-async function actualizarEnlace(usuario, cuentaLoL, columna, valor, resolve, reject, cambioDatos, nuevaInfoCuenta = false) {
-    const body = nuevaInfoCuenta ? {
+async function actualizarEnlace(usuario, cuentaLoL, columna, valor, resolve, reject, cambioDatos, setCambioDatos, modificarCuenta = false) {
+    const body = modificarCuenta ? {
         id_usuario: usuario.info.id_usuario,
         id: cuentaLoL.id_cuenta,
         invocador: valor,
-        tag: nuevaInfoCuenta[0],
+        tag: modificarCuenta[0],
         puuid_lol: cuentaLoL.puuid_lol,
-        linea_principal: getPosition(nuevaInfoCuenta[1]),
-        linea_secundaria: getPosition(nuevaInfoCuenta[2])
+        linea_principal: getPosition(modificarCuenta[1]),
+        linea_secundaria: getPosition(modificarCuenta[2])
     } : {
         columna: columna,
-        cuenta: valor,
-        token: window.localStorage.getItem("token"),
+        id_usuario: usuario.info.id_usuario,
+        valor: valor,
     };
 
     try {
-        const response = await axios.put(api.directorio + (nuevaInfoCuenta ? "cuentas" : "usuarios/enlaces"), body, {
+        const response = await axios.put(api.directorio + (modificarCuenta ? "cuentas" : "usuarios/enlaces"), body, {
             headers: { "x-auth-token": window.localStorage.getItem("token") }
         });
-
         if (response.data.status == 200) {
-            sendLog(usuario.info.id_usuario, nuevaInfoCuenta ? "Modificar Cuenta" : "Añadir Enlace", {
-                accion: nuevaInfoCuenta ? "Modificar Cuenta" : "Añadir Enlace",
+            sendLog(usuario.info.id_usuario, modificarCuenta ? "Modificar Cuenta" : "Añadir Enlace", {
+                accion: modificarCuenta ? "Modificar Cuenta" : "Añadir Enlace",
                 id_usuario: usuario.info.id_usuario,
                 body
             });
-            cambioDatos(true);
+            setCambioDatos(!cambioDatos);
             resolve();
         } else if (response.data.status == 500) {
             toast.error("Error. Avisa a la administración.");
@@ -40,11 +39,12 @@ async function actualizarEnlace(usuario, cuentaLoL, columna, valor, resolve, rej
             reject();
         }
     } catch (error) {
+        console.log(error);
         reject();
     }
 }
 
-async function eliminarEnlace(data, columna, resolve, reject, cambioDatos) {
+async function eliminarEnlace(data, columna, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         const check = await axios.delete(api.directorio + "usuarios/enlaces", {
             data: { id_usuario: data.info.id_usuario, columna: columna },
@@ -57,7 +57,7 @@ async function eliminarEnlace(data, columna, resolve, reject, cambioDatos) {
                 columna: columna,
                 token: window.localStorage.getItem("token"),
             });
-            cambioDatos(true);
+            setCambioDatos(!cambioDatos);
             resolve();
         } else if (check.data.status == 409) {
             toast.error("La cuenta ya ha sido vinculada.");
