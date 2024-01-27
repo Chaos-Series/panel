@@ -28,7 +28,7 @@ export default function RefrescarCuenta(info) {
                                 accion: "Refrescar Cuenta",
                                 id_usuario: info.usuario.info.id_usuario,
                             });
-                            info.cambioDatos(true);
+                            info.setCambioDatos(!info.cambioDatos);
                             resolve();
                         } else if (response.data.status == 500) {
                             toast.error("Error. Avisa a la administración.");

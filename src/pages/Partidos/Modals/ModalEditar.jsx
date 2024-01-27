@@ -136,7 +136,7 @@ export default function ModalJugadores(info) {
             encriptarPass().then(
                 (contrasenaEncriptada) => {
                     toast.promise(() => new Promise((resolve, reject) => {
-                        actualizarUsuario(info, info.columna.modificar, contrasenaEncriptada, info.cambioDatos, resolve, reject)
+                        actualizarUsuario(info, info.columna.modificar, contrasenaEncriptada, info.cambioDatos, info.setCambioDatos, resolve, reject)
                         resolve()
                     }), {
                         loading: 'Actualizando contraseña',
@@ -148,9 +148,9 @@ export default function ModalJugadores(info) {
         } else {
             toast.promise(() => new Promise((resolve, reject) => {
                 if (info.columna.modificar == "edad") {
-                    actualizarUsuario(info, info.columna.modificar, (Date.parse(valor) / 1000.0), info.cambioDatos, resolve, reject)
+                    actualizarUsuario(info, info.columna.modificar, (Date.parse(valor) / 1000.0), info.cambioDatos, info.setCambioDatos, resolve, reject)
                 } else {
-                    actualizarUsuario(info, info.columna.modificar, valor, info.cambioDatos, resolve, reject)
+                    actualizarUsuario(info, info.columna.modificar, valor, info.cambioDatos, info.setCambioDatos, resolve, reject)
                 }
             }), {
                 loading: 'Modificando usuario',

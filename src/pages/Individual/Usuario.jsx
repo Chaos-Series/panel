@@ -25,9 +25,9 @@ function Inicio() {
 
   useEffect(() => {
     returnSession(window.localStorage.getItem("token"))
-    conseguirUsuarioPorId(urlParams.get("id"), setCambioDatos).then((usuarioIndividual) => {
+    conseguirUsuarioPorId(urlParams.get("id"), cambioDatos, setCambioDatos).then((usuarioIndividual) => {
       setUsuario(usuarioIndividual.result)
-      conseguirEquipos(setCambioDatos).then((equipos) => {
+      conseguirEquipos(cambioDatos, setCambioDatos).then((equipos) => {
         setListaEquipos(equipos.result)
         setCargando(false)
       })
@@ -47,7 +47,7 @@ function Inicio() {
 
   return (
     <Layout>
-      <InfoUsuario usuario={usuario} listaEquipos={listaEquipos} cambioDatos={setCambioDatos}></InfoUsuario>
+      <InfoUsuario usuario={usuario} listaEquipos={listaEquipos} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></InfoUsuario>
     </Layout>
   )
 }

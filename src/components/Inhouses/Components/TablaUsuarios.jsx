@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useCallback, useEffect } from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue } from "@nextui-org/react";
+import { useState, useCallback, useEffect } from "react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip } from "@nextui-org/react";
 import { columns } from "../data";
 
 import ModalInscribirse from "../Modals/ModalInscribirse"
@@ -14,7 +14,7 @@ const statusColorMap = {
     vacation: "warning",
 };
 
-export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, cambioDatos }) {
+export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, cambioDatos, setCambioDatos }) {
 
     const [usuarioInscrito, setUsuarioInscrito] = useState(false);
 
@@ -53,7 +53,7 @@ export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, ca
         };
 
         fetchInformacionAdicional();
-    }, [jugadoresBlueFiltrados, jugadoresBlue, jugadoresRedFiltrados, jugadoresRed, cambioDatos]);
+    }, [jugadoresBlueFiltrados, jugadoresBlue, jugadoresRedFiltrados, jugadoresRed, usuario]);
 
     const renderCell = useCallback((user, columnKey) => {
         const cellValue = user[columnKey];
@@ -107,10 +107,7 @@ export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, ca
     }, []);
 
     const renderNoUser = useCallback((columnKey) => {
-        switch (columnKey) {
-            case "nick_usuario":
-                return (<div>ESPACIO LIBRE</div>);
-        }
+        if (columnKey === "nick_usuario") return <div>ESPACIO LIBRE</div>;
     }, []);
 
     return (
@@ -170,7 +167,7 @@ export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, ca
                 </Table>
             </div>
             <div className="w-full">
-                {!usuarioInscrito ? <ModalInscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} cambioDatos={cambioDatos} /> : <ModalDesinscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} cambioDatos={cambioDatos} />}
+                {!usuarioInscrito ? <ModalInscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} /> : <ModalDesinscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />}
                 
             </div>
         </div>

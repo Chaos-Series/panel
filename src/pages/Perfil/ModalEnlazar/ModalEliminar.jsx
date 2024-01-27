@@ -16,7 +16,7 @@ export default function ModalEliminar(datos) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            eliminarEnlace(datos.usuario, datos.tipo, resolve, reject, datos.cambioDatos)
+            eliminarEnlace(datos.usuario, datos.tipo, resolve, reject, datos.cambioDatos, datos.setCambioDatos)
         }), {
             loading: 'Eliminando enlace',
             success: 'Enlace eliminado',

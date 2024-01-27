@@ -16,7 +16,7 @@ export default function ModalEquipos(equipo) {
 
     const confirmarBorracion = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            eliminarEquipo(equipo["equipo"].id_equipo, resolve, reject, equipo.cambioDatos)
+            eliminarEquipo(equipo["equipo"].id_equipo, resolve, reject, equipo.cambioDatos, equipo.setCambioDatos)
         }), {
             loading: 'Borrando equipo',
             success: 'Equipo borrado',

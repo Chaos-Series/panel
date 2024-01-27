@@ -119,13 +119,13 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
                 <i className="fa-solid fa-circle-info font-[900]"></i>
               </Button>
             </Link>
-            <ModalBorrar equipo={user} cambioDatos={setCambioDatos} />
+            <ModalBorrar equipo={user} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
           </div>
         );
       default:
         return cellValue;
     }
-  }, []);
+  }, [cambioDatos, setCambioDatos]);
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -215,7 +215,7 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
               </DropdownMenu>
             </Dropdown>
             {console.log(selectedKeys)}
-            <ModalCrear cambioDatos={setCambioDatos} />
+            <ModalCrear setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -259,8 +259,8 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
   return (
     <>
       <div className="flex float-right gap-4">
-        <ModalEditarMasaEquipos usuarios={selectedKeys} equipos={equipos} cambioDatos={setCambioDatos} />
-        <ModalEditarMasaRoles usuarios={selectedKeys} cambioDatos={setCambioDatos} />
+        <ModalEditarMasaEquipos usuarios={selectedKeys} equipos={equipos} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
+        <ModalEditarMasaRoles usuarios={selectedKeys} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
       </div>
       <Table
         aria-label="Example table with custom cells, pagination and sorting"

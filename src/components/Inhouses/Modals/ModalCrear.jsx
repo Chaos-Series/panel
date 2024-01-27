@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { crearInhouse } from "../../../services/partidos";
+import { crearPartido } from "../../../services/partidos";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import { toast } from 'sonner'
@@ -15,7 +15,7 @@ export default function ModalEquipos(cambioDatos) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            crearInhouse(fecha, resolve, reject, cambioDatos.cambioDatos)
+            crearPartido(fecha, resolve, reject, cambioDatos.cambioDatos, cambioDatos.setCambioDatos, true)
         }), {
             loading: 'Creando inhouse',
             success: 'Inhouse creado',
@@ -34,6 +34,7 @@ export default function ModalEquipos(cambioDatos) {
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 placement="top-center"
+                aria-label="Crear Inhouse"
             >
                 <ModalContent>
                     {(onClose) => (

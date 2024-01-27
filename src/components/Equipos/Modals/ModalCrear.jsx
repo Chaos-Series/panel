@@ -22,7 +22,7 @@ export default function ModalEquipos(cambioDatos) {
         formdata.append("nombre", nombre);
         formdata.append("acronimo", acronimo);
         toast.promise(() => new Promise((resolve, reject) => {
-            crearEquipo(nombre, formdata, resolve, reject, cambioDatos.cambioDatos)
+            crearEquipo(nombre, formdata, resolve, reject, cambioDatos.cambioDatos, cambioDatos.setCambioDatos)
         }), {
             loading: 'Creando equipo',
             success: 'Equipo creado',
