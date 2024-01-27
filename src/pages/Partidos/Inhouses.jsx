@@ -9,17 +9,17 @@ import TablaInhouses from "../../components/Inhouses/Tabla/InhouseTabla.jsx"
 import { CircularProgress } from "@nextui-org/react"
 
 function Inhouses() {
-    const [inhouses, setInhouses] = useState()
-    const [cargando, setCargando] = useState(true)
-    const [cambioDatos, setCambioDatos] = useState(false)
+    const [inhouses, setInhouses] = useState();
+    const [cargando, setCargando] = useState(true);
+    const [cambioDatos, setCambioDatos] = useState(true);
 
     useEffect(() => {
-        if (!cargando) return;
-        returnSession(window.localStorage.getItem("token"))
+        returnSession(window.localStorage.getItem("token"));
+        if (!cambioDatos) return;
         conseguirPartidos(cambioDatos, setCambioDatos, true).then((listaInhouses) => {
-            setInhouses(listaInhouses.result)
-            setCargando(false)
-        })
+            setInhouses(listaInhouses.result);
+            setCargando(false);
+        });
     }, [cambioDatos, cargando]);
 
     if (cargando || localStorage.getItem("usuario") == null) {
@@ -36,7 +36,7 @@ function Inhouses() {
         <Layout>
             <TablaInhouses listaInhouses={inhouses} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></TablaInhouses>
         </Layout>
-    )
+    );
 }
 
 export default Inhouses
