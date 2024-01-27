@@ -11,13 +11,10 @@ import {
     Dropdown,
     DropdownMenu,
     DropdownItem,
-    Chip,
-    User,
     Pagination,
 } from "@nextui-org/react";
 
 import getDate from "../../../utils/getDate";
-import getPermisos from "../../../utils/getPerms"
 
 import ModalCrear from "../Modals/ModalCrear"
 
@@ -187,7 +184,7 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
-                        <ModalCrear cambioDatos={setCambioDatos} />
+                        <ModalCrear setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
@@ -243,7 +240,7 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
 
     return (
         <Table
-            aria-label="Example table with custom cells, pagination and sorting"
+            aria-label="Inhouses"
             isHeaderSticky
             bottomContent={bottomContent}
             bottomContentPlacement="outside"

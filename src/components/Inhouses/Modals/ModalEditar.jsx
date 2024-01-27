@@ -5,7 +5,7 @@ import api from "../../../../variables.json";
 import sendLog from "../../../utils/sendLog";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 export default function ModalEquipos(info) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -125,7 +125,7 @@ export default function ModalEquipos(info) {
         toast.promise(() => new Promise((resolve, reject) => {
             axios.put(api.directorio + "modificarequipo", { id: info.equipo.id_equipo, columna: info.columna.modificar, valor: valor }).then(function () {
                 sendLog(16, "Modificar Equipo", { id_equipo: info.equipo.id_equipo, nombre_equipo: info.equipo.nombre_equipo, columna_modificada: info.columna.modificar, valor_modificado: valor })
-                info.cambioDatos(true)
+                info.setCambioDatos(!info.cambioDatos)
                 resolve()
             }).catch(function () {
                 reject()

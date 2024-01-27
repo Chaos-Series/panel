@@ -8,20 +8,15 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Button,
   useDisclosure,
-  Input,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Checkbox,
 } from "@nextui-org/react";
 import { toast } from "sonner";
 
-export default function ModalDesinscribirse({ inhouse, blueLleno, redLleno, cambioDatos }) {
+export default function ModalDesinscribirse({ inhouse, blueLleno, redLleno, cambioDatos, setCambioDatos }) {
   let usuario = JSON.parse(localStorage.getItem("usuario"));
+  const [confirmacion, setConfirmacion] = useState(false);
 
   const cambiarConfirmacion = () => {
     setConfirmacion(!confirmacion);
@@ -38,9 +33,9 @@ export default function ModalDesinscribirse({ inhouse, blueLleno, redLleno, camb
       () =>
         new Promise((resolve, reject) => {
           if (side == 1) {
-            inscribirseInhouse(inhouse.id_partido, usuario.info.id_usuario, side, blueLleno, cambioDatos, resolve, reject);
+            inscribirseInhouse(inhouse.id_partido, usuario.info.id_usuario, side, blueLleno, cambioDatos, setCambioDatos, resolve, reject);
           } else if (side == 2) {
-            inscribirseInhouse(inhouse.id_partido, usuario.info.id_usuario, side, redLleno, cambioDatos, resolve, reject);
+            inscribirseInhouse(inhouse.id_partido, usuario.info.id_usuario, side, redLleno, cambioDatos, setCambioDatos, resolve, reject);
           } else {
             reject();
             toast.error("Debes escoger un lado.");
