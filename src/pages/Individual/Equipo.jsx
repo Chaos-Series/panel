@@ -24,13 +24,13 @@ function Inicio() {
 
   useEffect(() => {
     returnSession(window.localStorage.getItem("token"));
-    conseguirEquiposPorId(urlParams.get("id"), setCambioDatos).then((equipoIndividual) => {
+    conseguirEquiposPorId(urlParams.get("id"), cambioDatos, setCambioDatos).then((equipoIndividual) => {
       setEquipo(equipoIndividual.result);
-      conseguirLigas(setCambioDatos).then((listaLigas) => {
+      conseguirLigas(cambioDatos, setCambioDatos).then((listaLigas) => {
         setLigas(listaLigas.result);
-        conseguirTemporadas(setCambioDatos).then((listaTemporadas) => {
+        conseguirTemporadas(cambioDatos, setCambioDatos).then((listaTemporadas) => {
           setTemporadas(listaTemporadas.result);
-          conseguirUsuarios(urlParams.get("id"), setCambioDatos).then((listaUsuarios) => {
+          conseguirUsuarios(urlParams.get("id"), cambioDatos, setCambioDatos).then((listaUsuarios) => {
             setUsuarios(listaUsuarios.result);
             setCargando(false);
           });
@@ -51,7 +51,7 @@ function Inicio() {
 
   return (
     <Layout>
-      <InfoEquipo equipo={equipo} ligas={ligas} temporadas={temporadas} jugadores={usuarios} cambioDatos={setCambioDatos}></InfoEquipo>
+      <InfoEquipo equipo={equipo} ligas={ligas} temporadas={temporadas} jugadores={usuarios} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></InfoEquipo>
     </Layout>
   );
 }

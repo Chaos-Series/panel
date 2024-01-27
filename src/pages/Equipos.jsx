@@ -16,7 +16,7 @@ function Inicio() {
 
   useEffect(() => {
     returnSessionAdmin(window.localStorage.getItem("token"))
-    conseguirEquipos(setCambioDatos).then((listaEquipos) => {
+    conseguirEquipos(cambioDatos, setCambioDatos).then((listaEquipos) => {
       setEquipos(listaEquipos.result)
       setCargando(false)
     })

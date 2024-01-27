@@ -13,20 +13,20 @@ export default function ModalEnlazar(info) {
     const [cuenta, setCuenta] = useState("")
 
     const handleUpload = () => {
-        let valorFinal
+        let columna
         switch (valor) {
             case 1:
-                valorFinal = "circuitotormenta";
+                columna = "circuitotormenta";
                 break;
             case 2:
-                valorFinal = "twitter";
+                columna = "twitter";
                 break;
             case 3:
-                valorFinal = "discord";
+                columna = "discord";
                 break;
         }
         toast.promise(() => new Promise((resolve, reject) => {
-            actualizarEnlace(info.info, valorFinal, cuenta, resolve, reject, info.cambioDatos)
+            actualizarEnlace(info.info, null, columna, cuenta, resolve, reject, info.cambioDatos, info.setCambioDatos)
         }), {
             loading: 'Añadiendo enlace',
             success: 'Enlace añadido',

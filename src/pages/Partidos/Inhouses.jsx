@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import { conseguirInhouses } from "../../services/partidos";
+import { conseguirPartidos } from "../../services/partidos";
 import { returnSession } from "../../utils/sessions.js";
 
 import Layout from "../../components/Layout/Layout.jsx"
@@ -9,18 +9,18 @@ import TablaInhouses from "../../components/Inhouses/Tabla/InhouseTabla.jsx"
 import { CircularProgress } from "@nextui-org/react"
 
 function Inhouses() {
-
     const [inhouses, setInhouses] = useState()
     const [cargando, setCargando] = useState(true)
     const [cambioDatos, setCambioDatos] = useState(false)
 
     useEffect(() => {
+        if (!cargando) return;
         returnSession(window.localStorage.getItem("token"))
-        conseguirInhouses(setCambioDatos).then((listaInhouses) => {
+        conseguirPartidos(cambioDatos, setCambioDatos, true).then((listaInhouses) => {
             setInhouses(listaInhouses.result)
             setCargando(false)
         })
-    }, [cambioDatos]);
+    }, [cambioDatos, cargando]);
 
     if (cargando || localStorage.getItem("usuario") == null) {
         return (

@@ -12,7 +12,7 @@ import getPerms from "../../utils/getPerms";
 import { columnsEquipo } from "./data";
 import { columns } from "../Jugadores/data";
 
-export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDatos }) {
+export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDatos, setCambioDatos }) {
   const renderChip = (activo) => {
     switch (activo) {
       case 0:
@@ -62,7 +62,7 @@ export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDat
                         <div key={columna.name} className="flex items-center justify-between">
                           <p className="text-sm w-[5rem]">{columna.name}</p>
                           <p className="text-md font-[500] text-center w-[9rem]">{getEdad(jugador[columna.uid])}</p>
-                          <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} />
+                          <ModalJugadores jugador={jugador} columna={columna} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
                         </div>
                       );
                     } else if (columna.name == "Contraseña") {
@@ -70,7 +70,7 @@ export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDat
                         <div key={columna.name} className="flex items-center justify-between">
                           <p className="text-sm w-[5rem]">{columna.name}</p>
                           <p className="text-md font-[500] text-center w-[9rem]">--</p>
-                          <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} />
+                          <ModalJugadores jugador={jugador} columna={columna} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
                         </div>
                       );
                     } else if (equipo && columna.name == "Equipo") {
@@ -78,7 +78,7 @@ export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDat
                         <div key={columna.name} className="flex items-center justify-between">
                           <p className="text-sm w-[5rem]">{columna.name}</p>
                           <p className="text-md font-[500] text-center w-[9rem]">{equipo["nombre_equipo"]}</p>
-                          <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} />
+                          <ModalJugadores jugador={jugador} columna={columna} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
                         </div>
                       );
                     } else if (columna.name == "Rol") {
@@ -86,7 +86,7 @@ export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDat
                         <div key={columna.name} className="flex items-center justify-between">
                           <p className="text-sm w-[5rem]">{columna.name}</p>
                           <p className="text-md font-[500] text-center w-[9rem]">{getPerms(jugador[columna.uid])}</p>
-                          <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} />
+                          <ModalJugadores jugador={jugador} columna={columna} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
                         </div>
                       );
                     } else {
@@ -94,7 +94,7 @@ export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDat
                         <div key={columna.name} className="flex items-center justify-between">
                           <p className="text-sm w-[5rem]">{columna.name}</p>
                           <p className="text-md font-[500] text-center w-[9rem]">{jugador[columna.uid]}</p>
-                          <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} />
+                          <ModalJugadores jugador={jugador} columna={columna} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
                         </div>
                       );
                     }
@@ -130,7 +130,7 @@ export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDat
               <div key={columna.name} className="flex items-center justify-between">
                 <p className="text-sm w-[5rem]">{columna.name}</p>
                 <p className="text-md font-[500] text-center w-[9rem]">{equipo[0][columna.uid]}</p>
-                <ModalEquipos equipo={equipo} columna={columna} cambioDatos={cambioDatos} ligas={ligas} temporadas={temporadas} />
+                <ModalEquipos equipo={equipo} columna={columna} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} ligas={ligas} temporadas={temporadas} />
               </div>
             ))}
           </div>

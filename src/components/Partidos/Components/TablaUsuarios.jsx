@@ -3,10 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip } from "@nextui-org/react";
 import { columns } from "../data";
 
-import ModalInscribirse from "../Modals/ModalInscribirse"
-import ModalDesinscribirse from "../Modals/ModalDesinscribirse";
-
-import { obtenerInformacionAdicional, encontrarPrimeraPosicionConIdNull } from "../../../utils/Inhouse/recibirInfoExtra";
+import { obtenerInformacionAdicional } from "../../../utils/Inhouse/recibirInfoExtra";
 
 const statusColorMap = {
     active: "success",
@@ -14,38 +11,17 @@ const statusColorMap = {
     vacation: "warning",
 };
 
-export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, cambioDatos, setCambioDatos }) {
-
-    const [usuarioInscrito, setUsuarioInscrito] = useState(false);
-
-    let usuario = JSON.parse(localStorage.getItem("usuario")).info.id_usuario
-
+export default function TablaUsuarios({ jugadoresBlue, jugadoresRed, cambioDatos, setCambioDatos }) {
     const [jugadoresBlueFiltrados, setJugadoresBlueFiltrados] = useState(jugadoresBlue);
     const [jugadoresRedFiltrados, setJugadoresRedFiltrados] = useState(jugadoresRed);
 
-    const [blueState, setBlueState] = useState(0);
-    const [redState, setRedState] = useState(0);
-
     useEffect(() => {
-        for (let i = 0; i < jugadoresBlue.length; i++) {
-            if (jugadoresBlue[i].id === usuario) {
-                setUsuarioInscrito(true)
-            }
-        }
-    
-        for (let i = 0; i < jugadoresRed.length; i++) {
-            if (jugadoresRed[i].id === usuario) {
-                setUsuarioInscrito(true)
-            }
-        }
         const fetchInformacionAdicional = async () => {
             try {
                 const jugadoresActualizadosBlue = await obtenerInformacionAdicional(jugadoresBlueFiltrados, localStorage.getItem("token"));
                 const jugadoresActualizadosRed = await obtenerInformacionAdicional(jugadoresRedFiltrados, localStorage.getItem("token"));
                 setJugadoresBlueFiltrados(jugadoresActualizadosBlue);
                 setJugadoresRedFiltrados(jugadoresActualizadosRed);
-                setBlueState(await encontrarPrimeraPosicionConIdNull(jugadoresActualizadosBlue))
-                setRedState(await encontrarPrimeraPosicionConIdNull(jugadoresActualizadosRed))
             } catch (error) {
                 console.error('Error al obtener información adicional:', error);
                 // Puedes manejar el error según tus necesidades
@@ -53,7 +29,7 @@ export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, ca
         };
 
         fetchInformacionAdicional();
-    }, [jugadoresBlueFiltrados, jugadoresBlue, jugadoresRedFiltrados, jugadoresRed, usuario]);
+    }, [jugadoresBlueFiltrados, jugadoresBlue, jugadoresRedFiltrados, jugadoresRed, cambioDatos, setCambioDatos]);
 
     const renderCell = useCallback((user, columnKey) => {
         const cellValue = user[columnKey];
@@ -165,10 +141,6 @@ export default function TablaUsuarios({ inhouse, jugadoresBlue, jugadoresRed, ca
                         }}
                     </TableBody>
                 </Table>
-            </div>
-            <div className="w-full">
-                {!usuarioInscrito ? <ModalInscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} /> : <ModalDesinscribirse inhouse={inhouse} blueLleno={blueState} redLleno={redState} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />}
-                
             </div>
         </div>
     );

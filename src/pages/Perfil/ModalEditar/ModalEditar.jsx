@@ -40,7 +40,7 @@ export default function ModalPerfil(info) {
             encriptarPass().then(
                 (contrasenaEncriptada) => {
                     toast.promise(() => new Promise((resolve, reject) => {
-                        actualizarPerfil(info.jugador, info.columna.uid, contrasenaEncriptada, info.cambioDatos, resolve, reject)
+                        actualizarPerfil(info.jugador, info.columna.uid, contrasenaEncriptada, info.cambioDatos, info.setCambioDatos, resolve, reject)
                     }), {
                         loading: 'Actualizando contraseña',
                         success: 'Contraseña actualizada',
@@ -51,7 +51,7 @@ export default function ModalPerfil(info) {
         } else if (info.columna.tipo == "date") {
             toast.promise(() => new Promise((resolve, reject) => {
                 if (getEdad(valor) >= 16) {
-                    actualizarPerfil(info.jugador, info.columna.uid, valor, info.cambioDatos, resolve, reject)
+                    actualizarPerfil(info.jugador, info.columna.uid, valor, info.cambioDatos, info.setCambioDatos, resolve, reject)
                 } else {
                     toast.error("Tienes que ser mayor de 16 años")
                     reject()
@@ -63,7 +63,7 @@ export default function ModalPerfil(info) {
             });
         } else {
             toast.promise(() => new Promise((resolve, reject) => {
-                    actualizarPerfil(info.jugador, info.columna.uid, valor, info.cambioDatos, resolve, reject)
+                    actualizarPerfil(info.jugador, info.columna.uid, valor, info.cambioDatos, info.setCambioDatos, resolve, reject)
             }), {
                 loading: 'Modificando perfil',
                 success: 'Perfil modificado',
@@ -74,7 +74,7 @@ export default function ModalPerfil(info) {
 
     return (
         <>
-            <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-hammer"></i>} />
+            <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-pencil"></i>} />
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}

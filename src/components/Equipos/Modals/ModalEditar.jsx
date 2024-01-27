@@ -121,7 +121,7 @@ export default function ModalEquipos(info) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            modificarEquipo(info, valor, resolve, reject, info.cambioDatos)
+            modificarEquipo(info, valor, resolve, reject, info.cambioDatos, info.setCambioDatos)
         }), {
             loading: 'Modificando equipo',
             success: 'Equipo modificado',

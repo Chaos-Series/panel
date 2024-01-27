@@ -1,41 +1,42 @@
 import { useState, useEffect } from "react";
 
-import { conseguirUsuarios } from "../../services/usuarios.js";
+import { conseguirPartidos } from "../../services/partidos.js";
 import { returnSessionAdmin } from "../../utils/sessions.js";
 
 import Layout from "../../components/Layout/Layout.jsx";
-import TablaUsuarios from "../../components/Jugadores/Tabla/Tabla.jsx";
+import TablaPartidos from "../../components/Partidos/Tabla/PartidoTabla.jsx";
 
 import { CircularProgress } from "@nextui-org/react";
 
 function Partidos() {
-  const [usuarios, setUsuarios] = useState();
-  const [cargando, setCargando] = useState(true);
-  const [cambioDatos, setCambioDatos] = useState(false);
+    const [partidos, setPartidos] = useState();
+    const [cargando, setCargando] = useState(true);
+    const [cambioDatos, setCambioDatos] = useState(false);
 
-  useEffect(() => {
-    returnSessionAdmin(window.localStorage.getItem("token"));
-    conseguirUsuarios(setCambioDatos).then((listaUsuarios) => {
-      setUsuarios(listaUsuarios.result);
-      setCargando(false);
-    });
-  }, [cambioDatos]);
+    useEffect(() => {
+        if (!cargando) return;
+        returnSessionAdmin(window.localStorage.getItem("token"));
+        conseguirPartidos(cambioDatos, setCambioDatos).then((listaPartidos) => {
+            setPartidos(listaPartidos.result);
+            setCargando(false);
+        });
+    }, [cambioDatos, cargando]);
 
-  if (cargando || localStorage.getItem("usuario") == null) {
+    if (cargando || localStorage.getItem("usuario") == null) {
+        return (
+            <Layout>
+                <div className="w-full h-full flex justify-center items-center mt-16">
+                    <CircularProgress aria-label="Cargando..." />
+                </div>
+            </Layout>
+        );
+    }
+
     return (
-      <Layout>
-        <div className="w-full h-full flex justify-center items-center mt-16">
-          <CircularProgress aria-label="Cargando..." />
-        </div>
-      </Layout>
+        <Layout>
+            <TablaPartidos listaPartidos={partidos} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
+        </Layout>
     );
-  }
-
-  return (
-    <Layout>
-      
-    </Layout>
-  );
 }
 
 export default Partidos;

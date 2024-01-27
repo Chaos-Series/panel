@@ -17,7 +17,7 @@ export default function ModalEquipos(equipo) {
     const confirmarBorracion = () => {
         toast.promise(() => new Promise((resolve, reject) => {
             console.log("aqui")
-            eliminarUsuario(equipo["equipo"].id_usuario, resolve, reject, equipo.cambioDatos)
+            eliminarUsuario(equipo["equipo"].id_usuario, resolve, reject, equipo.cambioDatos, equipo.setCambioDatos)
         }), {
             loading: 'Borrando usuario',
             success: 'Usuario borrado',

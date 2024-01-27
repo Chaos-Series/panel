@@ -15,14 +15,12 @@ import {
   DropdownItem,
   Chip,
   User,
-  Pagination,
-  CircularProgress,
+  Pagination
 } from "@nextui-org/react";
 
 import ModalEquipos from "../Modals/ModalCrear";
 import ModalBorrar from "../Modals/ModalBorrar";
 
-import axios from "axios";
 import api from "../../../../variables.json";
 
 import { columns, statusOptions } from "./data";
@@ -120,13 +118,13 @@ export default function Tabla({ listaEquipos, setCambioDatos, cambioDatos }) {
                 <i className="fa-solid fa-circle-info font-[700]"></i>
               </Button>
             </Link>
-            <ModalBorrar equipo={user} cambioDatos={setCambioDatos} />
+            <ModalBorrar equipo={user} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
           </div>
         );
       default:
         return cellValue;
     }
-  }, []);
+  });
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -215,7 +213,7 @@ export default function Tabla({ listaEquipos, setCambioDatos, cambioDatos }) {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <ModalEquipos cambioDatos={setCambioDatos} />
+            <ModalEquipos setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
           </div>
         </div>
         <div className="flex justify-between items-center">
