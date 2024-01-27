@@ -4,7 +4,7 @@ import md5 from "md5";
 import { toast } from "sonner";
 import sendLog from "../utils/sendLog";
 
-async function crearUsuario(nombre, apellido, nick, edad, rol, contra, resolve, reject, cambioDatos) {
+async function crearUsuario(nombre, apellido, nick, edad, rol, contra, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         const encriptarPass = () => {
             return new Promise((resolve) => {
@@ -24,7 +24,7 @@ async function crearUsuario(nombre, apellido, nick, edad, rol, contra, resolve, 
             );
 
             if (respuesta.data.status == 200) {
-                cambioDatos(true);
+                setCambioDatos(!cambioDatos);
                 resolve();
             } else {
                 reject();
@@ -38,12 +38,12 @@ async function crearUsuario(nombre, apellido, nick, edad, rol, contra, resolve, 
     }
 }
 
-async function eliminarUsuario(id, resolve, reject, cambioDatos) {
+async function eliminarUsuario(id, resolve, reject, cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.delete(api.directorio + "usuarios", { data: { id }, headers: { "x-auth-token": localStorage.getItem("token") } });
 
         if (respuesta.data.status == 200) {
-            cambioDatos(true);
+            setCambioDatos(!cambioDatos);
             resolve();
         } else {
             reject();
@@ -53,10 +53,10 @@ async function eliminarUsuario(id, resolve, reject, cambioDatos) {
     }
 }
 
-async function conseguirUsuarios(setCambioDatos) {
+async function conseguirUsuarios(cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "usuarios", { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -64,10 +64,10 @@ async function conseguirUsuarios(setCambioDatos) {
     }
 }
 
-async function conseguirUsuarioPorId(idUsuario, setCambioDatos) {
+async function conseguirUsuarioPorId(idUsuario, cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "usuarios/id=" + idUsuario, { headers: { "x-auth-token": localStorage.getItem("token") } });
-        setCambioDatos(false);
+        setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -75,7 +75,7 @@ async function conseguirUsuarioPorId(idUsuario, setCambioDatos) {
     }
 }
 
-async function actualizarPerfil(usuario, columna, valor, cambioDatos, resolve, reject) {
+async function actualizarPerfil(usuario, columna, valor, cambioDatos, setCambioDatos, resolve, reject) {
     try {
         await axios.put(
             api.directorio + "usuarios",
@@ -83,7 +83,7 @@ async function actualizarPerfil(usuario, columna, valor, cambioDatos, resolve, r
             { headers: { "x-auth-token": localStorage.getItem("token") } }
         );
 
-        cambioDatos(true);
+        setCambioDatos(!cambioDatos);
         sendLog(usuario.info.id_usuario, "Actualizar Perfil", { id: usuario.info.id_usuario });
         resolve();
     } catch (error) {
@@ -91,7 +91,7 @@ async function actualizarPerfil(usuario, columna, valor, cambioDatos, resolve, r
     }
 }
 
-async function actualizarUsuario(usuario, columna, valor, cambioDatos, resolve, reject) {
+async function actualizarUsuario(usuario, columna, valor, cambioDatos, setCambioDatos, resolve, reject) {
     try {
         await axios.put(
             api.directorio + "usuarios",
@@ -99,7 +99,7 @@ async function actualizarUsuario(usuario, columna, valor, cambioDatos, resolve, 
             { headers: { "x-auth-token": localStorage.getItem("token") } }
         );
 
-        cambioDatos(true);
+        setCambioDatos(!cambioDatos);
         sendLog(usuario.jugador.id_usuario, "Actualizar Usuario", { id: usuario.jugador.id_usuario });
         resolve();
     } catch (error) {
@@ -107,7 +107,7 @@ async function actualizarUsuario(usuario, columna, valor, cambioDatos, resolve, 
     }
 }
 
-async function actualizarUsuariosMasaRoles(usuarios, valor, cambioDatos, resolve, reject) {
+async function actualizarUsuariosMasaRoles(usuarios, valor, cambioDatos, setCambioDatos, resolve, reject) {
     try {
         await axios.put(
             api.directorio + "usuarios/masa/roles",
@@ -115,14 +115,14 @@ async function actualizarUsuariosMasaRoles(usuarios, valor, cambioDatos, resolve
             { headers: { "x-auth-token": localStorage.getItem("token") } }
         );
 
-        cambioDatos(true);
+        setCambioDatos(!cambioDatos);
         resolve();
     } catch (error) {
         reject();
     }
 }
 
-async function actualizarUsuariosMasaEquipos(usuarios, valor, cambioDatos, resolve, reject) {
+async function actualizarUsuariosMasaEquipos(usuarios, valor, cambioDatos, setCambioDatos, resolve, reject) {
     try {
         await axios.put(
             api.directorio + "usuarios/masa/equipos",
@@ -130,7 +130,7 @@ async function actualizarUsuariosMasaEquipos(usuarios, valor, cambioDatos, resol
             { headers: { "x-auth-token": localStorage.getItem("token") } }
         );
 
-        cambioDatos(true);
+        setCambioDatos(!cambioDatos);
         resolve();
     } catch (error) {
         reject();
