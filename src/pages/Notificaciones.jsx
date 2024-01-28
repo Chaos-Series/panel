@@ -11,10 +11,11 @@ import { CircularProgress } from "@nextui-org/react";
 function Notificaciones() {
   const [usuarios, setUsuarios] = useState();
   const [cargando, setCargando] = useState(true);
-  const [cambioDatos, setCambioDatos] = useState(false);
+  const [cambioDatos, setCambioDatos] = useState(true);
 
   useEffect(() => {
     returnSessionAdmin(window.localStorage.getItem("token"));
+    if (!cambioDatos) return;
     conseguirUsuarios(cambioDatos, setCambioDatos).then((listaUsuarios) => {
       setUsuarios(listaUsuarios.result);
       setCargando(false);

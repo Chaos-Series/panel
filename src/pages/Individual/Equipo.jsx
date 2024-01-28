@@ -18,12 +18,13 @@ function Inicio() {
   const [temporadas, setTemporadas] = useState();
   const [usuarios, setUsuarios] = useState();
   const [cargando, setCargando] = useState(true);
-  const [cambioDatos, setCambioDatos] = useState(false);
+  const [cambioDatos, setCambioDatos] = useState(true);
 
   if (urlParams.get("id") == null) window.location.replace("/usuarios");
 
   useEffect(() => {
     returnSession(window.localStorage.getItem("token"));
+    if (!cambioDatos) return;
     conseguirEquiposPorId(urlParams.get("id"), cambioDatos, setCambioDatos).then((equipoIndividual) => {
       setEquipo(equipoIndividual.result);
       conseguirLigas(cambioDatos, setCambioDatos).then((listaLigas) => {
