@@ -17,11 +17,11 @@ function Inicio() {
 
   useEffect(() => {
     returnSessionAdmin(window.localStorage.getItem("token"));
-    conseguirUsuarios(setCambioDatos).then((listaUsuarios) => {
+    conseguirUsuarios(cambioDatos, setCambioDatos).then((listaUsuarios) => {
       setUsuarios(listaUsuarios.result);
       setCargando(false);
     });
-    conseguirEquipos(setCambioDatos).then((listaEquipos) => {
+    conseguirEquipos(cambioDatos, setCambioDatos).then((listaEquipos) => {
       setEquipos(listaEquipos.result)
     })
   }, [cambioDatos]);

@@ -14,7 +14,7 @@ import getEdad from "../../utils/getEdad";
 import getPerms from "../../utils/getPerms";
 import Enlazar from "../../pages/Perfil/Enlazamientos";
 
-export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
+export default function Jugador({ usuario, listaEquipos, cambioDatos, setCambioDatos }) {
     const [jugador, setJugador] = useState(usuario.info);
     const [equipo, setEquipo] = useState(usuario.equipo);
     const [equipoActivo, setEquipoActivo] = useState(false)
@@ -116,7 +116,7 @@ export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
             <div key={columna.name} className="flex items-center justify-between">
                 <p className="text-sm w-[5rem]">{columna.name}</p>
                 <p className="text-md font-[500] text-center w-[9rem]">{renderContent()}</p>
-                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} equipos={listaEquipos} />
+                <ModalJugadores jugador={jugador} columna={columna} cambioDatos={cambioDatos} setCambioDatos={setCambioDatos} equipos={listaEquipos} />
             </div>
         );
     };
@@ -152,11 +152,11 @@ export default function Jugador({ usuario, listaEquipos, cambioDatos }) {
                 </Card>
                 {renderEquipo()}
                 <div className="flex sm:w-[400px] gap-4">
-                    <Enlazar usuario={usuario} cambioDatos={cambioDatos} />
+                    <Enlazar usuario={usuario} cambioDatos={cambioDatos} setCambioDatos={setCambioDatos} />
                 </div>
             </div>
             <div className="flex w-full gap-4">
-                <Cuentas usuario={usuario} cambioDatos={cambioDatos} />
+                <Cuentas usuario={usuario} cambioDatos={cambioDatos} setCambioDatos={setCambioDatos} />
             </div>
         </div>
     );

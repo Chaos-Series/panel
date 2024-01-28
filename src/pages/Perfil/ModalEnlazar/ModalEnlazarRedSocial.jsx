@@ -12,7 +12,7 @@ export default function ModalEnlazarRedSocial(datos) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            actualizarEnlace(datos.usuario, datos.tipo, valor, resolve, reject, datos.cambioDatos)
+            actualizarEnlace(datos.usuario, null, datos.tipo, valor, resolve, reject, datos.cambioDatos, datos.setCambioDatos)
         }), {
             loading: 'Añadiendo enlace',
             success: 'Enlace añadido',
@@ -22,7 +22,7 @@ export default function ModalEnlazarRedSocial(datos) {
 
     return (
         <>
-            <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-hammer"></i>} />
+            <Button onClick={onOpen} color="warning" radius="full" variant="bordered" size="sm" isIconOnly endContent={<i className="fa-solid fa-pencil"></i>} />
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}

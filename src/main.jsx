@@ -15,6 +15,7 @@ import Inhouses from './pages/Partidos/Inhouses.jsx'
 import Clasificacion from './pages/Partidos/Clasificacion.jsx'
 
 import Inhouse from './pages/Individual/Inhouse.jsx'
+import Partido from './pages/Individual/Partido.jsx'
 
 import Notificaciones from "./pages/Notificaciones.jsx"
 
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
   {
     path: "/partidos",
     element: <Partidos />,
+  },
+  {
+    path: "/partido",
+    element: <Partido />,
   },
   {
     path: "/inhouses",

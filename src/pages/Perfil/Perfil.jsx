@@ -174,7 +174,7 @@ export default function Perfil() {
                           <div className="flex justify-between items-center">
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
-                              <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambio} />
+                              <ModalPerfil jugador={usuario} columna={columna} setCambioDatos={setCambio} cambioDatos={cambio} />
                               <></>
                             </div>
                           </div>
@@ -215,7 +215,7 @@ export default function Perfil() {
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
                               <p className="font-[600] text-lg">{getEdad(usuario.info[columna.uid])}</p>
-                              <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambio} />
+                              <ModalPerfil jugador={usuario} columna={columna} setCambioDatos={setCambio} cambioDatos={cambio} />
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -240,7 +240,7 @@ export default function Perfil() {
                             <p>{columna.name}</p>
                             <div className="flex justify-center items-center gap-4">
                               <p className="font-[600] text-lg">{usuario.info[columna.uid]}</p>
-                              <ModalPerfil jugador={usuario} columna={columna} cambioDatos={setCambio} />
+                              <ModalPerfil jugador={usuario} columna={columna} setCambioDatos={setCambio} cambioDatos={cambio} />
                             </div>
                           </div>
                           <Divider className="my-2" />
@@ -253,8 +253,8 @@ export default function Perfil() {
           </CardBody>
         </Card>
         <div className="flex flex-col sm:w-[50%] sm:py-0 py-4 gap-4">
-          {<CuentasTabla usuario={usuario} cambioDatos={setCambio} />}
-          {<Enlazar usuario={usuario} cambioDatos={setCambio} />}
+          {<CuentasTabla usuario={usuario} setCambioDatos={setCambio} cambioDatos={cambio} />}
+          {<Enlazar usuario={usuario} setCambioDatos={setCambio} cambioDatos={cambio} />}
         </div>
       </div>
     </Layout>

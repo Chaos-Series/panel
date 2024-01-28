@@ -28,7 +28,7 @@ export default function ModalUsuarios(cambioDatos) {
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
             if (getEdad((Date.parse(edad) / 1000.0)) >= 16) {
-                crearUsuario(nombre, apellido, nick, (Date.parse(edad) / 1000.0), rol, contra, resolve, reject, cambioDatos.cambioDatos)
+                crearUsuario(nombre, apellido, nick, (Date.parse(edad) / 1000.0), rol, contra, resolve, reject, cambioDatos.cambioDatos, cambioDatos.setCambioDatos)
             } else {
                 reject()
                 toast.error("El usuario debe de tener 16 años o más")

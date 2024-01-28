@@ -19,7 +19,7 @@ import {
 } from "@nextui-org/react";
 import { toast } from "sonner";
 
-export default function ModalEditarMasaEquipos({ usuarios, cambioDatos }) {
+export default function ModalEditarMasaEquipos({ usuarios, cambioDatos, setCambioDatos }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [valor, setValor] = useState();
@@ -230,7 +230,7 @@ export default function ModalEditarMasaEquipos({ usuarios, cambioDatos }) {
     toast.promise(
       () =>
         new Promise((resolve, reject) => {
-          actualizarUsuariosMasaRoles([...usuarios], valor, cambioDatos, resolve, reject);
+          actualizarUsuariosMasaRoles([...usuarios], valor, cambioDatos, setCambioDatos, resolve, reject);
         }),
       {
         loading: "Actualizando usuarios",

@@ -6,7 +6,7 @@ import { inscribirseInhouse } from "../../../services/partidos";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { toast } from 'sonner'
 
-export default function ModalInscribirse({ inhouse, blueLleno, redLleno, cambioDatos }) {
+export default function ModalInscribirse({ inhouse, blueLleno, redLleno, cambioDatos, setCambioDatos }) {
 
     let usuario = JSON.parse(localStorage.getItem("usuario"))
 
@@ -24,9 +24,9 @@ export default function ModalInscribirse({ inhouse, blueLleno, redLleno, cambioD
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
             if (side == 1) {
-                inscribirseInhouse(inhouse.id_partido, usuario.info.id_usuario, side, blueLleno, cambioDatos, resolve, reject)
+                inscribirseInhouse(inhouse.id_partido, usuario.info.id_usuario, side, blueLleno, cambioDatos, setCambioDatos, resolve, reject)
             } else if (side == 2) {
-                inscribirseInhouse(inhouse.id_partido, usuario.info.id_usuario, side, redLleno, cambioDatos, resolve, reject)
+                inscribirseInhouse(inhouse.id_partido, usuario.info.id_usuario, side, redLleno, cambioDatos, setCambioDatos, resolve, reject)
             } else {
                 reject()
                 toast.error("Debes escoger un lado.")

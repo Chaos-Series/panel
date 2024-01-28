@@ -23,7 +23,7 @@ import { columns, statusOptions } from "./data";
 const INITIAL_VISIBLE_COLUMNS = ["id_partido", "fecha", "progreso"];
 
 // eslint-disable-next-line react/prop-types
-export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDatos }) {
+export default function PartidoTabla({ listaPartidos, setCambioDatos, cambioDatos }) {
 
     const [filterValue, setFilterValue] = useState("");
     const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -34,11 +34,11 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
         direction: "ascending",
     });
     const [page, setPage] = useState(1);
-    const [inhouses, setInhouses] = useState(listaInhouses)
+    const [partidos, setPartidos] = useState(listaPartidos)
 
     useEffect(() => {
-        setInhouses(listaInhouses)
-    }, [cambioDatos, listaInhouses])
+        setPartidos(listaPartidos)
+    }, [cambioDatos, listaPartidos])
 
     const hasSearchFilter = Boolean(filterValue);
 
@@ -49,11 +49,11 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
     }, [visibleColumns]);
 
     const filteredItems = useMemo(() => {
-        let filteredUsers = [...inhouses];
+        let filteredUsers = [...partidos];
 
         if (hasSearchFilter) {
-            filteredUsers = filteredUsers.filter((user) =>
-                user.nick_usuario.toLowerCase().includes(filterValue.toLowerCase()),
+            filteredUsers = filteredUsers.filter((partido) =>
+                partido.nick_usuario.toLowerCase().includes(filterValue.toLowerCase()),
             );
         }
         if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
@@ -63,7 +63,7 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
         }
 
         return filteredUsers;
-    }, [inhouses, filterValue, statusFilter, hasSearchFilter]);
+    }, [partidos, filterValue, statusFilter, hasSearchFilter]);
 
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -94,14 +94,14 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
             case "progreso":
                 if (!cellValue)
                     return (
-                        <div className="flex justify-center items-center float-right bg-green-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/inhouse?id=" + user["id_partido"]) }}>
+                        <div className="flex justify-center items-center float-right bg-green-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/partido?id=" + user["id_partido"]) }}>
                             <p className="px-1">En Espera</p>
                             <i className="fa-solid fa-arrow-right"></i>
                         </div>
 
                     );
                 return (
-                    <div className="flex justify-center items-center float-right bg-red-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/inhouse?id=" + user["id_partido"]) }}>
+                    <div className="flex justify-center items-center float-right bg-red-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/partido?id=" + user["id_partido"]) }}>
                         <p className="px-1">Finalizado</p>
                         <i className="fa-solid fa-arrow-right"></i>
                     </div>
@@ -188,7 +188,7 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-default-400 text-small">Total de {inhouses.length} inhouses</span>
+                    <span className="text-default-400 text-small">Total de {partidos.length} partidos</span>
                     <label className="flex items-center text-default-400 text-small">
                         Filas por página
                         <select
@@ -209,7 +209,7 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
         statusFilter,
         visibleColumns,
         onRowsPerPageChange,
-        inhouses.length,
+        partidos.length,
         onSearchChange,
         hasSearchFilter,
     ]);
@@ -240,7 +240,7 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
 
     return (
         <Table
-            aria-label="Inhouses"
+            aria-label="Partidos"
             isHeaderSticky
             bottomContent={bottomContent}
             bottomContentPlacement="outside"
@@ -264,7 +264,7 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
                     </TableColumn>
                 )}
             </TableHeader>
-            <TableBody emptyContent={"No se han encontrado inhouses"} items={sortedItems}>
+            <TableBody emptyContent={"No se han encontrado partidos"} items={sortedItems}>
                 {(item) => (
                     <TableRow key={item.id_partido}>
                         {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

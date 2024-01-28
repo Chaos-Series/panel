@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import { conseguirInhouses } from "../../services/partidos";
+import { conseguirPartidos } from "../../services/partidos";
 import { returnSession } from "../../utils/sessions.js";
 
 import Layout from "../../components/Layout/Layout.jsx"
@@ -9,18 +9,18 @@ import TablaInhouses from "../../components/Inhouses/Tabla/InhouseTabla.jsx"
 import { CircularProgress } from "@nextui-org/react"
 
 function Inhouses() {
-
-    const [inhouses, setInhouses] = useState()
-    const [cargando, setCargando] = useState(true)
-    const [cambioDatos, setCambioDatos] = useState(false)
+    const [inhouses, setInhouses] = useState();
+    const [cargando, setCargando] = useState(true);
+    const [cambioDatos, setCambioDatos] = useState(true);
 
     useEffect(() => {
-        returnSession(window.localStorage.getItem("token"))
-        conseguirInhouses(setCambioDatos).then((listaInhouses) => {
-            setInhouses(listaInhouses.result)
-            setCargando(false)
-        })
-    }, [cambioDatos]);
+        returnSession(window.localStorage.getItem("token"));
+        if (!cambioDatos) return;
+        conseguirPartidos(cambioDatos, setCambioDatos, true).then((listaInhouses) => {
+            setInhouses(listaInhouses.result);
+            setCargando(false);
+        });
+    }, [cambioDatos, cargando]);
 
     if (cargando || localStorage.getItem("usuario") == null) {
         return (
@@ -36,7 +36,7 @@ function Inhouses() {
         <Layout>
             <TablaInhouses listaInhouses={inhouses} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></TablaInhouses>
         </Layout>
-    )
+    );
 }
 
 export default Inhouses

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 
 //import checkSession from "../../utils/checkSession";
 import { returnSession } from "../../utils/sessions.js";
-import { conseguirInhousePorId } from "../../services/partidos.js";
+import { conseguirPartidoPorId } from "../../services/partidos.js";
 
 import Layout from "../../components/Layout/Layout.jsx"
 import InfoInhouse from "../../components/Inhouses/Inhouses.jsx"
@@ -23,7 +23,7 @@ function Inicio() {
 
   useEffect(() => {
     returnSession(window.localStorage.getItem("token"))
-    conseguirInhousePorId(urlParams.get("id"), setCambioDatos).then((inhouseIndividual) => {
+    conseguirPartidoPorId(urlParams.get("id"), cambioDatos, setCambioDatos).then((inhouseIndividual) => {
       setInhouse(inhouseIndividual.result)
       setCargando(false)
     })
@@ -42,7 +42,7 @@ function Inicio() {
 
   return (
     <Layout>
-      <InfoInhouse inhouse={inhouse[0]} cambioDatos={setCambioDatos}></InfoInhouse>
+      <InfoInhouse inhouse={inhouse[0]} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></InfoInhouse>
     </Layout>
   )
 }

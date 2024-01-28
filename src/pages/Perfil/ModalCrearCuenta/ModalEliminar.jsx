@@ -16,7 +16,7 @@ export default function ModalEliminarCuenta(info) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            eliminarCuenta(info, resolve, reject, info.cambioDatos)
+            eliminarCuenta(info, resolve, reject, info.cambioDatos, info.setCambioDatos)
         }), {
             loading: 'Eliminando cuenta',
             success: 'Cuenta eliminada',
