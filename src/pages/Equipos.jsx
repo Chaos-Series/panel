@@ -12,10 +12,11 @@ function Inicio() {
 
   const [equipos, setEquipos] = useState()
   const [cargando, setCargando] = useState(true)
-  const [cambioDatos, setCambioDatos] = useState(false)
+  const [cambioDatos, setCambioDatos] = useState(true)
 
   useEffect(() => {
     returnSessionAdmin(window.localStorage.getItem("token"))
+    if (!cambioDatos) return;
     conseguirEquipos(cambioDatos, setCambioDatos).then((listaEquipos) => {
       setEquipos(listaEquipos.result)
       setCargando(false)
