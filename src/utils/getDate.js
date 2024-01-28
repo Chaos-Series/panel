@@ -1,16 +1,5 @@
 const getDate = (epoch) => {
-    var myDate = new Date(epoch * 1000);
-    return (
-        ("0" + myDate.getDate()).slice(-2) +
-        "/" +
-        ("0" + (myDate.getMonth() + 1)).slice(-2) +
-        "/" +
-        myDate.getFullYear() +
-        " " +
-        ("0" + myDate.getHours()).slice(-2) +
-        ":" +
-        ("0" + myDate.getMinutes()).slice(-2)
-    );
+    return new Date(epoch * 1000).toLocaleDateString(false, { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
 };
 
 export default getDate;
