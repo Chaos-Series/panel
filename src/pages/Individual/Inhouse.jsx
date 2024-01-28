@@ -16,13 +16,14 @@ function Inicio() {
 
   const [inhouse, setInhouse] = useState()
   const [cargando, setCargando] = useState(true)
-  const [cambioDatos, setCambioDatos] = useState(false)
+  const [cambioDatos, setCambioDatos] = useState(true)
 
   if (urlParams.get('id') == null)
     window.location.replace("/usuarios")
 
   useEffect(() => {
     returnSession(window.localStorage.getItem("token"))
+    if (!cambioDatos) return;
     conseguirPartidoPorId(urlParams.get("id"), cambioDatos, setCambioDatos).then((inhouseIndividual) => {
       setInhouse(inhouseIndividual.result)
       setCargando(false)
