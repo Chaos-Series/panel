@@ -12,10 +12,12 @@ export default function ModalEquipos(cambioDatos) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [fecha, setFecha] = useState()
+    const [liga, setLiga] = useState()
+    const [temporada, setTemporada] = useState()
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            crearPartido(fecha, resolve, reject, cambioDatos.cambioDatos, cambioDatos.setCambioDatos)
+            crearPartido(fecha, resolve, reject, cambioDatos.cambioDatos, cambioDatos.setCambioDatos, [liga, temporada])
         }), {
             loading: 'Creando partido',
             success: 'Partido creado',
@@ -42,6 +44,8 @@ export default function ModalEquipos(cambioDatos) {
                             <ModalHeader className="flex flex-col gap-1">Crear Partido</ModalHeader>
                             <ModalBody>
                                 <Input type="datetime-local" placeholder="Fecha" onChange={(e) => { setFecha(e.target.value) }} isRequired />
+                                <Input type="number" placeholder="Liga" onChange={(e) => { setLiga(e.target.value) }} isRequired />
+                                <Input type="number" placeholder="Temporada" onChange={(e) => { setTemporada(e.target.value) }} isRequired />
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>
@@ -49,7 +53,7 @@ export default function ModalEquipos(cambioDatos) {
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
                                     console.log(fecha)
-                                    if (fecha != "") {
+                                    if (fecha != "" && liga != "" && temporada != "") {
                                         handleUpload()
                                     } else {
                                         toast.error('No has rellenado todos los campos.')
