@@ -4,9 +4,17 @@ import { toast } from "sonner";
 import getEpoch from "../utils/getEpoch";
 import sendLog from "../utils/sendLog";
 
-async function crearPartido(fecha, resolve, reject, cambioDatos, setCambioDatos, inhouse = false) {
+async function crearPartido(fecha, resolve, reject, cambioDatos, setCambioDatos, infoPartido, inhouse = false) {
+    const body = inhouse ? {
+        fecha: getEpoch(fecha),
+    } : {
+        fecha: getEpoch(fecha),
+        id_liga: infoPartido[0],
+        id_temporada: infoPartido[1],
+    }
+
     try {
-        const respuesta = await axios.post(api.directorio + "partidos/inhouses", { fecha: getEpoch(fecha), tipo: inhouse ? 1 : 0 }, { headers: { "x-auth-token": localStorage.getItem("token") } });
+        const respuesta = await axios.post(api.directorio + (inhouse ? "partidos/inhouses" : "partidos"), body, { headers: { "x-auth-token": localStorage.getItem("token") } });
         if (respuesta.data.status == 200) {
             setCambioDatos(!cambioDatos);
             resolve();
@@ -35,7 +43,7 @@ async function eliminarUsuario(id, resolve, reject, cambioDatos, setCambioDatos)
 
 async function conseguirPartidos(cambioDatos, setCambioDatos, inhouse = false) {
     try {
-        const respuesta = await axios.get(api.directorio + `partidos/${inhouse ? "inhouses" : "partidos"}`, { headers: { "x-auth-token": localStorage.getItem("token") } });
+        const respuesta = await axios.get(api.directorio + (inhouse ? "partidos/inhouses" : "partidos"), { headers: { "x-auth-token": localStorage.getItem("token") } });
         setCambioDatos(!cambioDatos);
         return respuesta.data;
     } catch (error) {
@@ -46,7 +54,7 @@ async function conseguirPartidos(cambioDatos, setCambioDatos, inhouse = false) {
 
 async function conseguirPartidoPorId(idPartido, cambioDatos, setCambioDatos, inhouse = false) {
     try {
-        const url = api.directorio + "partidos/inhouses/?id=" + idPartido + `&tipo=${inhouse ? 1 : 0}`;
+        const url = api.directorio + "partidos/" + (inhouse ? "inhouses/id=" : "id=") + idPartido;
         const respuesta = await axios.get(url, { headers: { "x-auth-token": localStorage.getItem("token") } });
         setCambioDatos(!cambioDatos);
         return respuesta.data;
