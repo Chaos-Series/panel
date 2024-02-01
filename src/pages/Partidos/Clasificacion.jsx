@@ -1,25 +1,33 @@
 import { useState, useEffect } from "react";
 
-import { conseguirUsuarios } from "../../services/usuarios.js";
+import { conseguirClasificacion, conseguirEquipos } from "../../services/equipos.js";
 import { returnSessionAdmin } from "../../utils/sessions.js";
 
-import Layout from "../../components/Layout/Layout.jsx";
-import TablaUsuarios from "../../components/Jugadores/Tabla/Tabla.jsx";
+import Layout from "../../components/Layout/Layout.jsx"
+import TablaClasificaciones from "../../components/Clasificaciones/Tabla/Tabla.jsx"
 
-import { CircularProgress } from "@nextui-org/react";
+import { CircularProgress } from "@nextui-org/react"
 
-function Clasificacion() {
-  const [usuarios, setUsuarios] = useState();
-  const [cargando, setCargando] = useState(true);
-  const [cambioDatos, setCambioDatos] = useState(true);
+function Clasificaciones() {
+  const [equipos, setEquipos] = useState()
+  const [clasificacion, setClasificacion] = useState()
+  const [cargando, setCargando] = useState(true)
+  const [cambioDatos, setCambioDatos] = useState(true)
 
   useEffect(() => {
-    returnSessionAdmin(window.localStorage.getItem("token"));
+    returnSessionAdmin(window.localStorage.getItem("token"))
     if (!cambioDatos) return;
-    conseguirUsuarios(cambioDatos, setCambioDatos).then((listaUsuarios) => {
-      setUsuarios(listaUsuarios.result);
-      setCargando(false);
-    });
+
+    Promise.all([conseguirEquipos(cambioDatos, setCambioDatos), conseguirClasificacion(cambioDatos, setCambioDatos)])
+      .then(([listaEquipos, clasificacion]) => {
+        setEquipos(listaEquipos.result);
+        setClasificacion(clasificacion.result);
+        setCargando(false);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setCargando(false);
+      });
   }, [cambioDatos]);
 
   if (cargando || localStorage.getItem("usuario") == null) {
@@ -34,9 +42,9 @@ function Clasificacion() {
 
   return (
     <Layout>
-      
+      <TablaClasificaciones listaEquipos={equipos} listaClasificacion={clasificacion} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos}></TablaClasificaciones>
     </Layout>
-  );
+  )
 }
 
-export default Clasificacion;
+export default Clasificaciones
