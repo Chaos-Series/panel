@@ -4,6 +4,9 @@ const columnsEquipo = [ //hay que añadir si esta activo (statusoptions) + posic
     { name: "Liga", uid: "nombre_liga", modificar: "id_liga", tipo: "number" },
     { name: "Temporada", uid: "nombre_temporada", modificar: "id_temporada", tipo: "number" },
     { name: "Stage", uid: "stage", modificar: "stage", tipo: "number" },
+    { name: "Puntuación", uid: "puntuacion", modificar: "puntuacion", tipo: "number" },
+    { name: "Victorias", uid: "victorias", modificar: "victorias", tipo: "number" },
+    { name: "Derrotas", uid: "derrotas", modificar: "derrotas", tipo: "number" },
 ];
 
 export { columnsEquipo }
