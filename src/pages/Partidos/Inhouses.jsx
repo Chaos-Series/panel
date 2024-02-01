@@ -20,7 +20,7 @@ function Inhouses() {
             setInhouses(listaInhouses.result);
             setCargando(false);
         });
-    }, [cambioDatos, cargando]);
+    }, [cambioDatos]);
 
     if (cargando || localStorage.getItem("usuario") == null) {
         return (
