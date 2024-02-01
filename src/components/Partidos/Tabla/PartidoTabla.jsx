@@ -84,8 +84,8 @@ export default function PartidoTabla({ listaPartidos, setCambioDatos, cambioDato
         });
     }, [sortDescriptor, items]);
 
-    const renderCell = useCallback((user, columnKey) => {
-        const cellValue = user[columnKey];
+    const renderCell = useCallback((item, columnKey) => {
+        const cellValue = item[columnKey];
         switch (columnKey) {
             case "fecha":
                 return (
@@ -94,14 +94,14 @@ export default function PartidoTabla({ listaPartidos, setCambioDatos, cambioDato
             case "progreso":
                 if (!cellValue)
                     return (
-                        <div className="flex justify-center items-center float-right bg-green-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/partido?id=" + user["id_partido"]) }}>
+                        <div className="flex justify-center items-center float-right bg-green-400 dark:bg-green-600 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/partido?id=" + item["id_partido"]) }}>
                             <p className="px-1">En Espera</p>
                             <i className="fa-solid fa-arrow-right"></i>
                         </div>
 
                     );
                 return (
-                    <div className="flex justify-center items-center float-right bg-red-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/partido?id=" + user["id_partido"]) }}>
+                    <div className="flex justify-center items-center float-right bg-red-400 dark:bg-red-600 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/partido?id=" + item["id_partido"]) }}>
                         <p className="px-1">Finalizado</p>
                         <i className="fa-solid fa-arrow-right"></i>
                     </div>
@@ -245,7 +245,7 @@ export default function PartidoTabla({ listaPartidos, setCambioDatos, cambioDato
             bottomContent={bottomContent}
             bottomContentPlacement="outside"
             classNames={{
-                wrapper: "max-h-[382px]",
+                wrapper: "max-h-[382px] dark:text-foreground",
             }}
             sortDescriptor={sortDescriptor}
             topContent={topContent}
@@ -267,7 +267,11 @@ export default function PartidoTabla({ listaPartidos, setCambioDatos, cambioDato
             <TableBody emptyContent={"No se han encontrado partidos"} items={sortedItems}>
                 {(item) => (
                     <TableRow key={item.id_partido}>
-                        {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                        {(columnKey) =>
+                            <TableCell>
+                                {renderCell(item, columnKey)}
+                            </TableCell>
+                        }
                     </TableRow>
                 )}
             </TableBody>

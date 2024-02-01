@@ -62,7 +62,7 @@ export default function InicioSesion() {
     <div className="flex justify-center items-center h-[100vh] bg-[url(../assets/backgrounds/Fondo.jpg)] bg-center bg-[cover] bg-no-repeat">
       <Toaster richColors closeButton />
       <div className="flex justify-center items-center">
-        <Card className="py-4 m-4 h-[20rem] glass max-w-[20rem] w-[30rem] md:max-w-[30rem] min-h-[70vh] flex flex-col items-center justify-center px-[5rem] rounded-md">
+        <Card className="py-4 m-4 h-[20rem] light:glass  light:text-default-200 max-w-[20rem] w-[30rem] md:max-w-[30rem] min-h-[70vh] flex flex-col items-center justify-center px-[5rem] rounded-lg">
           <CardBody className="w-[20rem] mt-[1rem]">
             <div className="flex flex-col justify-center items-center h-full w-full">
               <div className="w-full h-full flex flex-col justify-center items-center gap-4 mt-0 pt-[1rem] md:pt-[1rem]">

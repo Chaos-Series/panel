@@ -166,7 +166,7 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
             isClearable
             className="w-full sm:max-w-[44%]"
             placeholder="Buscar por nombre..."
-            startContent={<i className="fa-solid fa-magnifying-glass"></i>}
+            startContent={<i className="fa-solid fa-magnifying-glass" style={{ color: "hsl(var(--nextui-foreground))" }}></i>}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}

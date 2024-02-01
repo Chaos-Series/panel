@@ -94,14 +94,13 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
             case "progreso":
                 if (!cellValue)
                     return (
-                        <div className="flex justify-center items-center float-right bg-green-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/inhouse?id=" + user["id_partido"]) }}>
+                        <div className="flex justify-center items-center float-right bg-green-400 dark:bg-green-600 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/inhouse?id=" + user["id_partido"]) }}>
                             <p className="px-1">En Espera</p>
                             <i className="fa-solid fa-arrow-right"></i>
                         </div>
-
                     );
                 return (
-                    <div className="flex justify-center items-center float-right bg-red-400 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/inhouse?id=" + user["id_partido"]) }}>
+                    <div className="flex justify-center items-center float-right bg-red-400 dark:bg-red-600 w-24 text-center p-1 px-1 rounded-lg cursor-pointer" onClick={() => { window.location.replace("/inhouse?id=" + user["id_partido"]) }}>
                         <p className="px-1">Finalizado</p>
                         <i className="fa-solid fa-arrow-right"></i>
                     </div>
@@ -245,7 +244,7 @@ export default function InhouseTabla({ listaInhouses, setCambioDatos, cambioDato
             bottomContent={bottomContent}
             bottomContentPlacement="outside"
             classNames={{
-                wrapper: "max-h-[382px]",
+                wrapper: "max-h-[382px] dark:text-foreground",
             }}
             sortDescriptor={sortDescriptor}
             topContent={topContent}

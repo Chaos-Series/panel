@@ -53,13 +53,6 @@ export default function Tabla({ listaEquipos, setCambioDatos, cambioDatos }) {
     return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
   }, [visibleColumns]);
 
-  const [ligas, setLigas] = useState([
-    {
-      id_liga: 1,
-      nombre_liga: "Primer Split",
-    },
-  ]);
-
   const filteredItems = useMemo(() => {
     let filteredUsers = [...users];
 
@@ -165,7 +158,7 @@ export default function Tabla({ listaEquipos, setCambioDatos, cambioDatos }) {
             isClearable
             className="w-full sm:max-w-[44%]"
             placeholder="Buscar por nombre..."
-            startContent={<i className="fa-solid fa-magnifying-glass"></i>}
+            startContent={<i className="fa-solid fa-magnifying-glass" style={{ color: "hsl(var(--nextui-foreground))" }}></i>}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
@@ -258,7 +251,7 @@ export default function Tabla({ listaEquipos, setCambioDatos, cambioDatos }) {
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
-        wrapper: "max-h-[382px]",
+        wrapper: "max-h-[382px] dark:text-foreground",
       }}
       selectedKeys={selectedKeys}
       selectionMode="multiple"
