@@ -1,59 +1,60 @@
 import { useState } from "react";
 
-import { crearPartido } from "../../../services/partidos";
+import { crearEquipo } from "../../../services/equipos";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import { toast } from 'sonner'
 
 export default function ModalEquipos(cambioDatos) {
-
-    let usuario = JSON.parse(localStorage.getItem("usuario"))
-
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const [fecha, setFecha] = useState()
-    const [liga, setLiga] = useState()
-    const [temporada, setTemporada] = useState()
+    const [file, setFile] = useState()
+    const [nombre, setNombre] = useState("")
+    const [acronimo, setAcronimo] = useState("")
+
+    const handleFile = (e) => {
+        setFile(e.target.files[0])
+    }
 
     const handleUpload = () => {
+        const formdata = new FormData()
+        formdata.append("imagenEquipo", file)
+        formdata.append("nombre", nombre);
+        formdata.append("acronimo", acronimo);
         toast.promise(() => new Promise((resolve, reject) => {
-            crearPartido(fecha, resolve, reject, cambioDatos.cambioDatos, cambioDatos.setCambioDatos, [liga, temporada])
+            crearEquipo(nombre, formdata, resolve, reject, cambioDatos.cambioDatos, cambioDatos.setCambioDatos)
         }), {
-            loading: 'Creando partido',
-            success: 'Partido creado',
+            loading: 'Creando equipo',
+            success: 'Equipo creado',
             error: 'Error',
         });
     }
 
     return (
         <>
-            {(usuario.info.rol >= 20) &&
-                <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
-                    Crear Partido
-                </Button>
-            }
+            <Button color="primary" onPress={onOpen} endContent={<i className="fa-solid fa-plus"></i>}>
+                Crear Equipo
+            </Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 placement="top-center"
-                aria-label="Crear Partido"
             >
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Crear Partido</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Crear Equipo</ModalHeader>
                             <ModalBody>
-                                <Input type="datetime-local" placeholder="Fecha" onChange={(e) => { setFecha(e.target.value) }} isRequired />
-                                <Input type="number" placeholder="Liga" onChange={(e) => { setLiga(e.target.value) }} isRequired />
-                                <Input type="number" placeholder="Temporada" onChange={(e) => { setTemporada(e.target.value) }} isRequired />
+                                <Input type="text" placeholder="Nombre" className="w-full sm:max-w-[100%]" onChange={(e) => { setNombre(e.target.value) }} isRequired />
+                                <Input type="text" variant={"flat"} placeholder="Acrónimo (MÁX 3 CARÁCTERES)" onChange={(e) => { setAcronimo(e.target.value) }} isRequired />
+                                <Input id="upload" type="file" variant={"flat"} onChange={handleFile} />
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>
                                     Cerrar
                                 </Button>
                                 <Button color="primary" onPress={onClose} onClick={() => {
-                                    console.log(fecha)
-                                    if (fecha != "" && liga != "" && temporada != "") {
+                                    if (file != undefined && nombre != "" && acronimo != "") {
                                         handleUpload()
                                     } else {
                                         toast.error('No has rellenado todos los campos.')

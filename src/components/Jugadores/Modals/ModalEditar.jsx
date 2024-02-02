@@ -162,7 +162,7 @@ export default function ModalJugadores(info) {
 
     return (
         <>
-            <Button onClick={onOpen} size="sm" isIconOnly aria-label="Modificar" color="warning"><i className="fa-solid fa-hammer text-white"></i></Button>
+            <Button onClick={onOpen} size="sm" isIconOnly aria-label="Modificar" color="warning"><i className="fa-solid fa-hammer"></i></Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}

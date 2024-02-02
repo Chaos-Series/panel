@@ -88,7 +88,7 @@ export default function ModalEditarMasaEquipos({ usuarios, equipos, cambioDatos,
 
   return (
     <>
-      <Button color="warning" onPress={onOpen} aria-label="Modificar" className="text-white" endContent={<i className="fa-solid fa-hammer"></i>}>
+      <Button color="warning" onPress={onOpen} aria-label="Modificar" endContent={<i className="fa-solid fa-hammer"></i>}>
         Modificar Equipos
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">

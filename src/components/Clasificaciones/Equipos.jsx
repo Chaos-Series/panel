@@ -12,7 +12,7 @@ import getPerms from "../../utils/getPerms";
 import { columnsEquipo } from "./data";
 import { columns } from "../Jugadores/data";
 
-export default function Equipo({ equipo, ligas, temporadas, clasificacion, jugadores, cambioDatos, setCambioDatos }) {
+export default function Equipo({ equipo, ligas, temporadas, jugadores, cambioDatos, setCambioDatos }) {
   const renderChip = (activo) => {
     switch (activo) {
       case 0:
@@ -103,7 +103,7 @@ export default function Equipo({ equipo, ligas, temporadas, clasificacion, jugad
               </CardBody>
               <Divider />
               <CardFooter>
-                <Link isExternal showAnchorIcon href={"/usuario?id=" + jugador.id_usuario}>
+                <Link isExternal showAnchorIcon href="#">
                   Visitar Página del Usuario
                 </Link>
               </CardFooter>
@@ -129,12 +129,18 @@ export default function Equipo({ equipo, ligas, temporadas, clasificacion, jugad
             {columnsEquipo.map((columna) => (
               <div key={columna.name} className="flex items-center justify-between">
                 <p className="text-sm w-[5rem]">{columna.name}</p>
-                <p className="text-md font-[500] text-center w-[9rem]">{equipo[0][columna.uid] ?? clasificacion[0][columna.uid]}</p>
-                <ModalEquipos equipo={equipo} columna={columna} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} ligas={ligas} temporadas={temporadas} clasificacion={clasificacion} />
+                <p className="text-md font-[500] text-center w-[9rem]">{equipo[0][columna.uid]}</p>
+                <ModalEquipos equipo={equipo} columna={columna} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} ligas={ligas} temporadas={temporadas} />
               </div>
             ))}
           </div>
         </CardBody>
+        <Divider />
+        <CardFooter>
+          <Link isExternal showAnchorIcon href="#">
+            Visitar Página del Equipo
+          </Link>
+        </CardFooter>
       </Card>
       <div className="flex gap-4 overflow-x-auto no-scrollbar">{renderJugadores()}</div>
     </div>

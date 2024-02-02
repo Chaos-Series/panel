@@ -242,7 +242,7 @@ export default function ModalEditarMasaEquipos({ usuarios, cambioDatos, setCambi
 
   return (
     <>
-      <Button color="warning" onPress={onOpen} aria-label="Modificar" className="text-white" endContent={<i className="fa-solid fa-hammer"></i>}>
+      <Button color="warning" onPress={onOpen} aria-label="Modificar" endContent={<i className="fa-solid fa-hammer"></i>}>
         Modificar Roles
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">

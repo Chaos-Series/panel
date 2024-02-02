@@ -40,6 +40,7 @@ async function conseguirEquipos(cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "equipos", { headers: { "x-auth-token": localStorage.getItem("token") } });
         setCambioDatos(!cambioDatos);
+
         return respuesta.data;
     } catch (error) {
         console.log(error);
@@ -80,6 +81,38 @@ async function conseguirTemporadas(cambioDatos, setCambioDatos) {
     }
 }
 
+async function conseguirClasificacion(cambioDatos, setCambioDatos) {
+    try {
+        const respuesta = await axios.get(api.directorio + "clasificacion", { headers: { "x-auth-token": localStorage.getItem("token") } });
+        setCambioDatos(!cambioDatos);
+        return respuesta.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+async function conseguirClasificacionPorId(cambioDatos, setCambioDatos, id, detalles = false) {
+    try {
+        const respuesta = await axios.get(api.directorio + (detalles ? `clasificacion/detalles/id=${id}` : `clasificacion/id=${id}`), { headers: { "x-auth-token": localStorage.getItem("token") } });
+        setCambioDatos(!cambioDatos);
+        return respuesta.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+async function modificarClasificacion(info, valor, resolve, reject, cambioDatos, setCambioDatos) {
+    try {
+        await axios.put(api.directorio + "clasificacion", { id: info.equipo[0].id_equipo, columna: info.columna.modificar, valor: valor }, { headers: { "x-auth-token": localStorage.getItem("token") } });
+        setCambioDatos(!cambioDatos);
+        resolve();
+    } catch (error) {
+        reject();
+    }
+}
+
 async function conseguirUsuarios(idEquipo, cambioDatos, setCambioDatos) {
     try {
         const respuesta = await axios.get(api.directorio + "equipos/usuarios/id=" + idEquipo, { headers: { "x-auth-token": localStorage.getItem("token") } });
@@ -101,4 +134,5 @@ async function modificarEquipo(info, valor, resolve, reject, cambioDatos, setCam
     }
 }
 
-export { crearEquipo, eliminarEquipo, conseguirEquipos, conseguirEquiposPorId, conseguirLigas, conseguirTemporadas, conseguirUsuarios, modificarEquipo };
+
+export { crearEquipo, eliminarEquipo, conseguirEquipos, conseguirEquiposPorId, conseguirLigas, conseguirTemporadas, conseguirUsuarios, modificarEquipo, conseguirClasificacion, conseguirClasificacionPorId, modificarClasificacion };

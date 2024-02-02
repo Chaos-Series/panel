@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 
-import axios from "axios"
-import api from "../../../../variables.json";
-import sendLog from "../../../utils/sendLog";
+import { modificarEquipo } from "../../../services/equipos";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { toast } from 'sonner'
@@ -123,13 +121,7 @@ export default function ModalEquipos(info) {
 
     const handleUpload = () => {
         toast.promise(() => new Promise((resolve, reject) => {
-            axios.put(api.directorio + "modificarequipo", { id: info.equipo.id_equipo, columna: info.columna.modificar, valor: valor }).then(function () {
-                sendLog(16, "Modificar Equipo", { id_equipo: info.equipo.id_equipo, nombre_equipo: info.equipo.nombre_equipo, columna_modificada: info.columna.modificar, valor_modificado: valor })
-                info.setCambioDatos(!info.cambioDatos)
-                resolve()
-            }).catch(function () {
-                reject()
-            })
+            modificarEquipo(info, valor, resolve, reject, info.cambioDatos, info.setCambioDatos)
         }), {
             loading: 'Modificando equipo',
             success: 'Equipo modificado',

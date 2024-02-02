@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import {
   Table,
@@ -13,25 +13,22 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Chip,
   User,
-  Pagination,
+  Pagination
 } from "@nextui-org/react";
 
-import getEdad from "../../../utils/getEdad";
-import getPermisos from "../../../utils/getPerms";
-
-import ModalCrear from "../Modals/ModalCrear";
+import ModalEquipos from "../Modals/ModalCrear";
 import ModalBorrar from "../Modals/ModalBorrar";
 
-import ModalEditarMasaEquipos from "../Modals/ModalEditarMasaEquipos";
-import ModalEditarMasaRoles from "../Modals/ModalEditarMasaRoles";
+import api from "../../../../variables.json";
 
-import { columns, tipoRol } from "./data";
+import { columns, statusOptions } from "./data";
 
-const INITIAL_VISIBLE_COLUMNS = ["id_usuario", "nick_usuario", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["id_equipo", "nombre_equipo", "logo_equipo", "id_liga", "puntuacion", "victorias", "derrotas", "actions"];
 
 // eslint-disable-next-line react/prop-types
-export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cambioDatos }) {
+export default function Tabla({ listaEquipos, listaClasificacion, setCambioDatos, cambioDatos }) {
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -42,16 +39,27 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
     direction: "ascending",
   });
   const [page, setPage] = useState(1);
-  const [users, setUsers] = useState(listaUsuarios);
-
   const [equipos, setEquipos] = useState(listaEquipos);
 
   useEffect(() => {
-    setUsers(listaUsuarios);
     setEquipos(listaEquipos);
-  }, [cambioDatos, listaUsuarios, listaEquipos]);
+  }, [cambioDatos, listaEquipos]);
 
   const hasSearchFilter = Boolean(filterValue);
+
+  const mergedArray = [...listaEquipos, ...listaClasificacion];
+
+  mergedArray.reduce((acc, item) => {
+    const existingItem = acc.find((i) => i.id_equipo === item.id_equipo);
+
+    if (existingItem) {
+      Object.assign(existingItem, item);
+    } else {
+      acc.push(item);
+    }
+
+    return acc;
+  }, []);
 
   const headerColumns = useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -60,17 +68,17 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
   }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredUsers = [...equipos];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) => user.nick_usuario.toLowerCase().includes(filterValue.toLowerCase()));
+      filteredUsers = filteredUsers.filter((user) => user.nombre_equipo.toLowerCase().includes(filterValue.toLowerCase()));
     }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== tipoRol.length) {
-      filteredUsers = filteredUsers.filter((user) => Array.from(statusFilter).includes(user.rol.toString()));
+    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
+      filteredUsers = filteredUsers.filter((user) => Array.from(statusFilter).includes(user.status));
     }
 
     return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+  }, [equipos, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -91,41 +99,59 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = useCallback((user, columnKey) => {
+  const renderRow = (user) => {
+    return (
+      <TableRow key={user.id_equipo}>
+        {headerColumns.map((column) => (
+          <TableCell key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+            {renderCell(user, column.uid)}
+          </TableCell>
+        ))}
+      </TableRow>
+    );
+  };
+
+
+  const ligas = {
+    1: "Primer Split",
+    2: "Segundo Split",
+    3: "Tercer Split",
+  };
+  const renderCell = (user, columnKey) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
-      case "nick_usuario":
+      case "logo_equipo":
+        return <User avatarProps={{ radius: "lg", src: api.directorio + "images/" + user.logo_equipo }} description={user.nombre_usuario}></User>;
+      case "role":
         return (
-          <User
-            avatarProps={{
-              radius: "lg",
-              src: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/" + user.icono + ".jpg",
-            }}
-            description={user.nombre_usuario}
-            name={cellValue}
-          >
-            {user.nombre_usuario}
-          </User>
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-tiny capitalize text-default-400">{user.linea_principal}</p>
+          </div>
         );
-      case "edad":
-        return <p>{getEdad(cellValue) + " Años"}</p>;
-      case "rol":
-        return <p>{getPermisos(cellValue)}</p>;
+      case "verificado":
+        return (
+          <Chip className="capitalize" color={cellValue == 0 ? "warning" : "success"} size="sm" variant="flat">
+            {cellValue == 0 ? <div>Inactivo</div> : <div>Activo</div>}
+          </Chip>
+        );
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Link to={"/usuario?id=" + user.id_usuario}>
+            <Link to={"/equipo?id=" + user.id_equipo}>
               <Button size="sm" isIconOnly aria-label="Informacion" color="primary">
-                <i className="fa-solid fa-circle-info font-[900]"></i>
+                <i className="fa-solid fa-circle-info font-[700]"></i>
               </Button>
             </Link>
             <ModalBorrar equipo={user} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
           </div>
         );
+      case "id_liga":
+        return ligas[cellValue] || "";
       default:
         return cellValue;
     }
-  }, [cambioDatos, setCambioDatos]);
+  };
 
   const onNextPage = useCallback(() => {
     if (page < pages) {
@@ -175,7 +201,7 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button endContent={<i className="fa-solid fa-chevron-down"></i>} variant="flat">
-                  Filtros
+                  Estado
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -186,7 +212,7 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}
               >
-                {tipoRol.map((status) => (
+                {statusOptions.map((status) => (
                   <DropdownItem key={status.uid} className="capitalize">
                     {status.name}
                   </DropdownItem>
@@ -214,12 +240,11 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
                 ))}
               </DropdownMenu>
             </Dropdown>
-            {console.log(selectedKeys)}
-            <ModalCrear setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
+            <ModalEquipos setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total de {users.length} usuarios</span>
+          <span className="text-default-400 text-small">Total de {equipos.length} equipos</span>
           <label className="flex items-center text-default-400 text-small">
             Filas por página
             <select className="bg-transparent outline-none text-default-400 text-small ml-4" onChange={onRowsPerPageChange}>
@@ -227,21 +252,18 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
               <option value="20">20</option>
               <option value="50">50</option>
               <option value="100">100</option>
-              <option value="200">200</option>
-              <option value="500">500</option>
-              <option value="1000">1000</option>
             </select>
           </label>
         </div>
       </div>
     );
-  }, [filterValue, statusFilter, visibleColumns, onRowsPerPageChange, users.length, onSearchChange, hasSearchFilter]);
+  }, [filterValue, statusFilter, visibleColumns, onRowsPerPageChange, equipos.length, onSearchChange, hasSearchFilter]);
 
   const bottomContent = useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <span className="w-[30%] text-small text-default-400">
-          {selectedKeys === "all" ? "Todos los usuarios seleccionados" : `Seleccionados ${selectedKeys.size} de ${filteredItems.length} usuarios`}
+          {selectedKeys === "all" ? "Todos los equipos seleccionados" : `Seleccionados ${selectedKeys.size} de ${filteredItems.length} equipos`}
         </span>
         <Pagination isCompact showControls showShadow color="primary" page={page} total={pages} onChange={setPage} />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
@@ -257,38 +279,32 @@ export default function Tabla({ listaUsuarios, listaEquipos, setCambioDatos, cam
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <>
-      <div className="flex float-right gap-4">
-        <ModalEditarMasaEquipos usuarios={selectedKeys} equipos={equipos} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
-        <ModalEditarMasaRoles usuarios={selectedKeys} setCambioDatos={setCambioDatos} cambioDatos={cambioDatos} />
-      </div>
-      <Table
-        aria-label="Example table with custom cells, pagination and sorting"
-        isHeaderSticky
-        bottomContent={bottomContent}
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: "max-h-[382px]",
-        }}
-        selectedKeys={selectedKeys}
-        selectionMode="multiple"
-        sortDescriptor={sortDescriptor}
-        topContent={topContent}
-        topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column) => (
-            <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"} allowsSorting={column.sortable}>
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={"No se han encontrado jugadores"} items={sortedItems}>
-          {(item) => <TableRow key={item.id_usuario}>{(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}</TableRow>}
-        </TableBody>
-      </Table>
-    </>
+    <Table
+      aria-label="Example table with custom cells, pagination and sorting"
+      isHeaderSticky
+      bottomContent={bottomContent}
+      bottomContentPlacement="outside"
+      classNames={{
+        wrapper: "max-h-[382px] dark:text-foreground",
+      }}
+      selectedKeys={selectedKeys}
+      selectionMode="multiple"
+      sortDescriptor={sortDescriptor}
+      topContent={topContent}
+      topContentPlacement="outside"
+      onSelectionChange={setSelectedKeys}
+      onSortChange={setSortDescriptor}
+    >
+      <TableHeader columns={headerColumns}>
+        {(column) => (
+          <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"} allowsSorting={column.sortable}>
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent={"No se han encontrado equipos"} items={sortedItems}>
+        {renderRow}
+      </TableBody>
+    </Table>
   );
 }
